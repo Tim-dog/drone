@@ -3,260 +3,286 @@
 #include "flyfunc.h"
 #include "detectf.h"
 
-// åˆ·æ–°å¹¶ç»˜åˆ¶æ•´ä¸ªæ£€æµ‹ç•Œé¢çš„å‡½æ•°
+
+// Ë¢ÐÂ²¢»æÖÆÕû¸ö¼ì²â½çÃæµÄº¯Êý
 void detect_screen(int record[21][26], char *nowfield, int language)
 {
-    // è®¾ç½®èƒŒæ™¯é¢œè‰²ä¸ºç™½è‰²
-    setbkcolor(WHITE);
+    setbkcolor(WHITE);  // ÉèÖÃ´°¿Ú±³¾°É«Îª°×É«
+    cleardevice();      // Çå¿ÕÆÁÄ»£¬Çå³ýÖ®Ç°»æÖÆµÄËùÓÐÍ¼ÐÎ
+    clrmous(MouseX, MouseY);  // Çå³ýÊó±êµ±Ç°Î»ÖÃµÄÏÔÊ¾ºÛ¼£
 
-    // æ¸…ç©ºå±å¹•ï¼Œæ“¦é™¤ä¹‹å‰ç»˜åˆ¶çš„æ‰€æœ‰å†…å®¹
-    cleardevice();
+    paint_field(record, nowfield, language);  // ¸ù¾Ý¼ÇÂ¼Êý×é¡¢µ±Ç°³¡¾°ºÍÓïÑÔ»æÖÆÖ÷ÇøÓòÄÚÈÝ
 
-    // æ¸…é™¤é¼ æ ‡æŒ‡é’ˆåœ¨å±å¹•ä¸Šçš„ç—•è¿¹ï¼ŒMouseXå’ŒMouseYæ˜¯é¼ æ ‡å½“å‰åæ ‡
-    clrmous(MouseX, MouseY);
+    put_calender();  // »æÖÆÈÕÀúÐÅÏ¢£¬ÏÔÊ¾ÈÕÆÚ»òÏà¹ØÌáÊ¾
 
-    // ç»˜åˆ¶ä¸»æ˜¾ç¤ºåŒºåŸŸï¼Œæ ¹æ®recordæ•°ç»„ã€å½“å‰åœºæ™¯ånowfieldå’Œè¯­è¨€languageæ¥å†³å®šå†…å®¹
-    paint_field(record, nowfield, language);
-
-    // åœ¨å±å¹•ä¸Šç»˜åˆ¶ä¸€ä¸ªæ—¥åŽ†ï¼Œé€šå¸¸ç”¨äºŽæ˜¾ç¤ºå½“å‰æ—¥æœŸ
-    put_calender();
-
-    // ç»˜åˆ¶æ¨¡å¼é€‰æ‹©æŒ‰é’®ï¼ŒPAINTæ¨¡å¼è¡¨ç¤ºè¦åœ¨å±å¹•ä¸Šç”»å‡ºæ¥
-    mode_button(PAINT);
-
-    // ç»˜åˆ¶â€œå¼€å§‹â€æŒ‰é’®ï¼ŒPAINTæ¨¡å¼è¡¨ç¤ºç»˜åˆ¶æŒ‰é’®è€Œä¸æ˜¯å“åº”ç‚¹å‡»
-    start_button(PAINT);
-
-    // ç»˜åˆ¶â€œæš‚åœâ€æŒ‰é’®ï¼ŒPAINTæ¨¡å¼è¡¨ç¤ºç»˜åˆ¶æŒ‰é’®è€Œä¸æ˜¯å“åº”ç‚¹å‡»
-    pause_button(PAINT);
-
-    // ç»˜åˆ¶â€œå›¾è¡¨â€æŒ‰é’®ï¼ŒPAINTæ¨¡å¼è¡¨ç¤ºç»˜åˆ¶æŒ‰é’®è€Œä¸æ˜¯å“åº”ç‚¹å‡»
-    chart_button(PAINT);
+    mode_button(PAINT);   // »æÖÆ¡°Ä£Ê½ÇÐ»»¡±°´Å¥
+    start_button(PAINT);  // »æÖÆ¡°¿ªÊ¼¡±°´Å¥
+    pause_button(PAINT);  // »æÖÆ¡°ÔÝÍ£¡±°´Å¥
+    chart_button(PAINT);  // »æÖÆ¡°Í¼±í¡±°´Å¥
 }
 
+
+// »æÖÆÈÕÀú×é¼þ
 void put_calender(void)
 {
-    
-    setfillstyle(SOLID_FILL,DARKGRAY);
-    bar(5,10,95,13);//(5,10) (95,120)
+    setfillstyle(SOLID_FILL, DARKGRAY);  // ÉèÖÃÌî³äÑÕÉ«ÎªÉî»ÒÉ«
+
+    // »æÖÆÈÕÀú±ß¿ò
+    bar(5,10,95,13);
     bar(5,10,8,120);
     bar(5,117,95,120);
     bar(92,10,95,120);
 
-    bar(5,70,95,73);//73-117  44 22 73-95 95-117 x:68-92
+    // »æÖÆÄÚ²¿ºáÏòºÍÊúÏò·Ö¸ôÏß
+    bar(5,70,95,73);
     bar(65,70,68,120);
-    
-    setcolor(DARKGRAY);
-    settextstyle(DEFAULT_FONT,HORIZ_DIR,1);
-    outtextxy(15,18,"DAY");
 
+    setcolor(DARKGRAY);  // ÉèÖÃÎÄ×ÖÑÕÉ«
+    settextstyle(DEFAULT_FONT, HORIZ_DIR, 1);  // Ä¬ÈÏ×ÖÌå
+    outtextxy(15,18,"DAY");  // Êä³öÎÄ±¾¡°DAY¡±
+
+    // »æÖÆÉÏÏÂ¼ýÍ·°´Å¥
     put_up_arrow(72,90,2);
     put_down_arrow(72,100,2);
 }
-void put_calender_number(char *date)//(15,20,90,60)
+
+
+// ÔÚÈÕÀú¿òÖÐ»æÖÆÈÕÆÚÊý×Ö
+void put_calender_number(char *date)  //(15,20,90,60) ×¢£º´óÖÂ¶ÔÓ¦ÏÔÊ¾ÇøÓò
 {
-    setfillstyle(SOLID_FILL,WHITE);
-    bar(11,25,90,69);
-    setcolor(DARKGRAY);
-    settextstyle(DEFAULT_FONT,HORIZ_DIR,3);
-    if(strlen(date)==3) outtextxy(15,35,date);
-    if(strlen(date)==1) outtextxy(39,35,date);
-    if(strlen(date)==2) outtextxy(27,35,date);
+    setfillstyle(SOLID_FILL, WHITE);  // ÉèÖÃÌî³äÑùÊ½Îª°×É«ÊµÐÄ
+    bar(11, 25, 90, 69);              // ÔÚÖ¸¶¨ÇøÓò»æÖÆÒ»¸ö°×É«¾ØÐÎ£¬Çå³ýÔ­ÓÐÄÚÈÝ
+
+    setcolor(DARKGRAY);               // ÉèÖÃ»æÖÆÑÕÉ«ÎªÉî»ÒÉ«
+    settextstyle(DEFAULT_FONT, HORIZ_DIR, 3);  // ÉèÖÃÎÄ×ÖÑùÊ½£¬Ä¬ÈÏ×ÖÌå£¬Ë®Æ½ÅÅÁÐ£¬×ÖºÅ3
+
+    // ¸ù¾ÝÈÕÆÚ×Ö·û´®³¤¶Èµ÷ÕûÎÄ×ÖµÄÎ»ÖÃ£¬È·±£Êý×Ö¾ÓÖÐÃÀ¹Û
+    if (strlen(date) == 3) outtextxy(15, 35, date);
+    if (strlen(date) == 1) outtextxy(39, 35, date);
+    if (strlen(date) == 2) outtextxy(27, 35, date);
 }
+
+
+// ¸ù¾ÝÌìÆø×´Ì¬»æÖÆ¶ÔÓ¦µÄÌìÆøÍ¼±ê
 void put_calender_weather(char weather[10])
 {
-    setfillstyle(SOLID_FILL,WHITE);
-    bar(8,73,65,117);
-    if(strcmp(weather,"CLOUD") == 0 ) {
-        put_cloud(15,100,3);
+    setfillstyle(SOLID_FILL, WHITE);  // ÉèÖÃÌî³äÑùÊ½Îª°×É«ÊµÐÄ
+    bar(8, 73, 65, 117);              // »æÖÆ°×É«¾ØÐÎ£¬Çå¿ÕÌìÆøÇøÓò
+
+    // ¸ù¾Ý´«ÈëµÄÌìÆø×Ö·û´®£¬µ÷ÓÃ¶ÔÓ¦µÄÍ¼±ê»æÖÆº¯Êý
+    if (strcmp(weather, "CLOUD") == 0) {
+        put_cloud(15, 100, 3);        // »æÖÆÔÆ¶äÍ¼±ê£¬Î»ÖÃ(15,100)£¬´óÐ¡3
     }
-    else if(strcmp(weather,"SUN")==0 ) {
-        put_sun(28,86,3,RED);
+    else if (strcmp(weather, "SUN") == 0) {
+        put_sun(28, 86, 3, RED);      // »æÖÆÌ«ÑôÍ¼±ê£¬Î»ÖÃ(28,86)£¬´óÐ¡3£¬ÑÕÉ«ºìÉ«
     }
-    else if(strcmp(weather,"RAIN")==0 ) {
-        put_rain(20,95,3);
+    else if (strcmp(weather, "RAIN") == 0) {
+        put_rain(20, 95, 3);          // »æÖÆÓêµÎÍ¼±ê£¬Î»ÖÃ(20,95)£¬´óÐ¡3
     }
-    else if(strcmp(weather,"SNOW")==0 ) {
-        put_snow(20,95,3);
+    else if (strcmp(weather, "SNOW") == 0) {
+        put_snow(20, 95, 3);          // »æÖÆÑ©»¨Í¼±ê£¬Î»ÖÃ(20,95)£¬´óÐ¡3
     }
 }
+
+
+// »æÖÆÄ£Ê½°´Å¥£¬¸ù¾Ý flag ¿ØÖÆÏÔÊ¾Ð§¹û
 void mode_button(int flag)
 {
-    if(flag == PAINT)
+    if(flag == PAINT)  // ÆÕÍ¨»æÖÆ×´Ì¬
     {
-        clrmous(MouseX,MouseY);
-        printbox(5,130,95,169,DARKGRAY,1,3,3);
-        setcolor(DARKGRAY);
-        settextstyle(DEFAULT_FONT,HORIZ_DIR,2);
+        clrmous(MouseX, MouseY);  // Çå³ýÊó±ê¹ì¼£
+        printbox(5,130,95,169, DARKGRAY, 1,3,3);  // »æÖÆ°´Å¥¿ò£¬Éî»ÒÉ«±³¾°
+        setcolor(DARKGRAY);  // ÉèÖÃÎÄ×ÖÑÕÉ«
+        settextstyle(DEFAULT_FONT, HORIZ_DIR, 2);  // Ä¬ÈÏ×ÖÌå£¬×ÖºÅ2
+        outtextxy(13,141,"MODE>");  // Êä³ö°´Å¥ÎÄ×Ö
+    }
+    else if(flag == LIGHT)  // ¸ßÁÁ×´Ì¬
+    {
+        clrmous(MouseX, MouseY);
+        printbox(5,130,95,169, BLUE, 1,3,3);  // À¶É«±³¾°
+        setcolor(CYAN);  // ÎÄ×ÖÓÃÇàÉ«
+        settextstyle(DEFAULT_FONT, HORIZ_DIR, 2);
         outtextxy(13,141,"MODE>");
     }
-    else if(flag == LIGHT)
-    {
-        clrmous(MouseX,MouseY);
-        printbox(5,130,95,169,BLUE,1,3,3);//39
-        setcolor(CYAN);
-        settextstyle(DEFAULT_FONT,HORIZ_DIR,2);
-        outtextxy(13,141,"MODE>");
-    }
-    else if(flag == RECOVER)
+    else if(flag == RECOVER)  // »Ö¸´×´Ì¬£¬ÖØÐÂ»æÖÆÄ¬ÈÏ°´Å¥
     {
         mode_button(PAINT);
     }
 }
+
+
+// »æÖÆ¡°START¡±°´Å¥£¬¸ù¾Ý flag ¿ØÖÆ×´Ì¬
 void start_button(int flag)
 {
-    if(flag == PAINT)
+    if(flag == PAINT)  // ÆÕÍ¨×´Ì¬
     {
-        clrmous(MouseX,MouseY);
-        printbox(5,180,95,219,DARKGRAY,1,3,3);
+        clrmous(MouseX, MouseY);
+        printbox(5,180,95,219, DARKGRAY, 1,3,3);
         setcolor(DARKGRAY);
-        settextstyle(DEFAULT_FONT,HORIZ_DIR,2);
-        outtextxy(13,191,"START");
+        settextstyle(DEFAULT_FONT, HORIZ_DIR, 2);
+        outtextxy(13,191, "START");
     }
-    else if(flag == LIGHT)
+    else if(flag == LIGHT)  // ¸ßÁÁ×´Ì¬
     {
-        clrmous(MouseX,MouseY);
-        printbox(5,180,95,219,BLUE,1,3,3);
+        clrmous(MouseX, MouseY);
+        printbox(5,180,95,219, BLUE, 1,3,3);
         setcolor(CYAN);
-        settextstyle(DEFAULT_FONT,HORIZ_DIR,2);
-        outtextxy(13,191,"START");
+        settextstyle(DEFAULT_FONT, HORIZ_DIR, 2);
+        outtextxy(13,191, "START");
     }
-    else if(flag == RECOVER)
+    else if(flag == RECOVER)  // »Ö¸´Ä¬ÈÏ
     {
         start_button(PAINT);
     }
 }
+
+
+// »æÖÆ¡°PAUSE¡±°´Å¥£¬¸ù¾Ý flag ¿ØÖÆ×´Ì¬
 void pause_button(int flag)
 {
-    if(flag == PAINT)
+    if(flag == PAINT)  // ÆÕÍ¨×´Ì¬
     {
-        clrmous(MouseX,MouseY);
-        printbox(5,230,95,269,DARKGRAY,1,3,3);
+        clrmous(MouseX, MouseY);
+        printbox(5,230,95,269, DARKGRAY, 1,3,3);
         setcolor(DARKGRAY);
-        settextstyle(DEFAULT_FONT,HORIZ_DIR,2);
-        outtextxy(13,241,"PAUSE");
+        settextstyle(DEFAULT_FONT, HORIZ_DIR, 2);
+        outtextxy(13,241, "PAUSE");
     }
-    else if(flag == LIGHT)
+    else if(flag == LIGHT)  // ¸ßÁÁ×´Ì¬
     {
-        clrmous(MouseX,MouseY);
-        printbox(5,230,95,269,BLUE,1,3,3);
+        clrmous(MouseX, MouseY);
+        printbox(5,230,95,269, BLUE, 1,3,3);
         setcolor(CYAN);
-        settextstyle(DEFAULT_FONT,HORIZ_DIR,2);
-        outtextxy(13,241,"PAUSE");
+        settextstyle(DEFAULT_FONT, HORIZ_DIR, 2);
+        outtextxy(13,241, "PAUSE");
     }
-    else if(flag == RECOVER)
+    else if(flag == RECOVER)  // »Ö¸´Ä¬ÈÏ
     {
         pause_button(PAINT);
     }
 }
 
+
+// »æÖÆ¡°CHART¡±°´Å¥£¬¸ù¾Ý flag ¿ØÖÆ°´Å¥ÏÔÊ¾×´Ì¬
 void chart_button(int flag)
 {
-    if(flag == PAINT)
+    if(flag == PAINT)  // ÆÕÍ¨»æÖÆ×´Ì¬£¬°´Å¥Îª»ÒÉ«
     {
-        clrmous(MouseX,MouseY);
-        printbox(5,280,95,319,DARKGRAY,1,3,3);
-        setcolor(DARKGRAY);
-        settextstyle(DEFAULT_FONT,HORIZ_DIR,2);
-        outtextxy(13,291,"CHART");
+        clrmous(MouseX, MouseY);  // Çå³ýÊó±ê¹ì¼£
+        printbox(5,280,95,319, DARKGRAY, 1,3,3);  // »æÖÆ»ÒÉ«°´Å¥¿ò
+        setcolor(DARKGRAY);  // ÉèÖÃÎÄ×ÖÑÕÉ«Îª»ÒÉ«
+        settextstyle(DEFAULT_FONT, HORIZ_DIR, 2);  // ÉèÖÃ×ÖÌåÑùÊ½
+        outtextxy(13,291, "CHART");  // ÔÚ°´Å¥ÖÐÏÔÊ¾¡°CHART¡±
     }
-    else if(flag == LIGHT)
+    else if(flag == LIGHT)  // ¸ßÁÁ×´Ì¬£¬°´Å¥±³¾°ÎªÀ¶É«
     {
-        clrmous(MouseX,MouseY);
-        printbox(5,280,95,319,BLUE,1,3,3);
-        setcolor(CYAN);
-        settextstyle(DEFAULT_FONT,HORIZ_DIR,2);
-        outtextxy(13,291,"CHART");
+        clrmous(MouseX, MouseY);  // Çå³ýÊó±ê¹ì¼£
+        printbox(5,280,95,319, BLUE, 1,3,3);  // »æÖÆÀ¶É«°´Å¥¿ò
+        setcolor(CYAN);  // ÉèÖÃÎÄ×ÖÑÕÉ«ÎªÇàÉ«
+        settextstyle(DEFAULT_FONT, HORIZ_DIR, 2);  // ÉèÖÃ×ÖÌåÑùÊ½
+        outtextxy(13,291, "CHART");  // ÏÔÊ¾¡°CHART¡±
     }
-    else if(flag == RECOVER)
+    else if(flag == RECOVER)  // »Ö¸´µ½Ä¬ÈÏ×´Ì¬£¬µ÷ÓÃPAINT×´Ì¬
     {
-        chart_button(PAINT);
+        chart_button(PAINT);  // »Ö¸´ÎªÆÕÍ¨»æÖÆ×´Ì¬
     }
 }
+
+// »æÖÆ¡°ROUTE¡±°´Å¥£¬¸ù¾Ý flag ¿ØÖÆ°´Å¥ÏÔÊ¾×´Ì¬
 void route_button(int flag)
 {
-    if(flag == PAINT)
+    if(flag == PAINT)  // ÆÕÍ¨»æÖÆ×´Ì¬£¬°´Å¥Îª»ÒÉ«
     {
-        clrmous(MouseX,MouseY);
-        printbox(5,330,95,369,DARKGRAY,1,3,3);
-        setcolor(DARKGRAY);
-        settextstyle(DEFAULT_FONT,HORIZ_DIR,2);
-        outtextxy(13,341,"ROUTE");
+        clrmous(MouseX, MouseY);  // Çå³ýÊó±ê¹ì¼£
+        printbox(5,330,95,369, DARKGRAY, 1,3,3);  // »æÖÆ»ÒÉ«°´Å¥¿ò
+        setcolor(DARKGRAY);  // ÉèÖÃÎÄ×ÖÑÕÉ«Îª»ÒÉ«
+        settextstyle(DEFAULT_FONT, HORIZ_DIR, 2);  // ÉèÖÃ×ÖÌåÑùÊ½
+        outtextxy(13,341, "ROUTE");  // ÔÚ°´Å¥ÖÐÏÔÊ¾¡°ROUTE¡±
     }
-    else if(flag == LIGHT)
+    else if(flag == LIGHT)  // ¸ßÁÁ×´Ì¬£¬°´Å¥±³¾°ÎªÀ¶É«
     {
-        clrmous(MouseX,MouseY);
-        printbox(5,330,95,369,BLUE,1,3,3);
-        setcolor(CYAN);
-        settextstyle(DEFAULT_FONT,HORIZ_DIR,2);
-        outtextxy(13,341,"ROUTE");
+        clrmous(MouseX, MouseY);  // Çå³ýÊó±ê¹ì¼£
+        printbox(5,330,95,369, BLUE, 1,3,3);  // »æÖÆÀ¶É«°´Å¥¿ò
+        setcolor(CYAN);  // ÉèÖÃÎÄ×ÖÑÕÉ«ÎªÇàÉ«
+        settextstyle(DEFAULT_FONT, HORIZ_DIR, 2);  // ÉèÖÃ×ÖÌåÑùÊ½
+        outtextxy(13,341, "ROUTE");  // ÏÔÊ¾¡°ROUTE¡±
     }
-    else if(flag == DELETE)
+    else if(flag == DELETE)  // É¾³ý×´Ì¬£¬²Á³ý°´Å¥ÇøÓò
     {
-        setfillstyle(SOLID_FILL,WHITE);
-        bar(5,330,95,369);
+        setfillstyle(SOLID_FILL, WHITE);  // ÉèÖÃÌî³äÉ«Îª°×É«
+        bar(5,330,95,369);  // ²Á³ý°´Å¥ÇøÓò
     }
-    else if(flag == RECOVER)
+    else if(flag == RECOVER)  // »Ö¸´µ½Ä¬ÈÏ×´Ì¬£¬µ÷ÓÃPAINT×´Ì¬
     {
-        route_button(PAINT);
+        route_button(PAINT);  // »Ö¸´ÎªÆÕÍ¨»æÖÆ×´Ì¬
     }
 }
+
+
+// »æÖÆ¡°SET¡±°´Å¥£¬¸ù¾Ý flag ¿ØÖÆ°´Å¥ÏÔÊ¾×´Ì¬
 void set_button(int flag)
 {
-    if(flag == PAINT)
+    if(flag == PAINT)  // ÆÕÍ¨»æÖÆ×´Ì¬
     {
-        clrmous(MouseX,MouseY);
-        printbox(5,330,95,369,DARKGRAY,1,3,3);
-        setcolor(DARKGRAY);
-        settextstyle(DEFAULT_FONT,HORIZ_DIR,2);
-        outtextxy(13,341," SET");
+        clrmous(MouseX, MouseY);  // Çå³ýÊó±ê¹ì¼£
+        printbox(5,330,95,369, DARKGRAY, 1,3,3);  // »æÖÆ»ÒÉ«°´Å¥¿ò
+        setcolor(DARKGRAY);  // ÉèÖÃÎÄ×ÖÑÕÉ«
+        settextstyle(DEFAULT_FONT, HORIZ_DIR, 2);  // ÉèÖÃ×ÖÌå
+        outtextxy(13,341, " SET");  // ÏÔÊ¾¡°SET¡±
     }
-    else if(flag == LIGHT)
+    else if(flag == LIGHT)  // ¸ßÁÁ×´Ì¬
     {
-        clrmous(MouseX,MouseY);
-        printbox(5,330,95,369,BLUE,1,3,3);
-        setcolor(CYAN);
-        settextstyle(DEFAULT_FONT,HORIZ_DIR,2);
-        outtextxy(13,341," SET");
+        clrmous(MouseX, MouseY);  // Çå³ýÊó±ê¹ì¼£
+        printbox(5,330,95,369, BLUE, 1,3,3);  // »æÖÆÀ¶É«°´Å¥¿ò
+        setcolor(CYAN);  // ÉèÖÃÎÄ×ÖÑÕÉ«
+        settextstyle(DEFAULT_FONT, HORIZ_DIR, 2);  // ÉèÖÃ×ÖÌå
+        outtextxy(13,341, " SET");  // ÏÔÊ¾¡°SET¡±
     }
-    else if(flag == DELETE)
+    else if(flag == DELETE)  // É¾³ý×´Ì¬
     {
-        setfillstyle(SOLID_FILL,WHITE);
-        bar(5,330,95,369);
+        setfillstyle(SOLID_FILL, WHITE);  // ÉèÖÃ°×É«Ìî³ä
+        bar(5,330,95,369);  // ²Á³ý°´Å¥ÇøÓò
     }
-    else if(flag == RECOVER)
+    else if(flag == RECOVER)  // »Ö¸´×´Ì¬
     {
-        set_button(PAINT);
+        set_button(PAINT);  // »Ö¸´ÎªÆÕÍ¨»æÖÆ×´Ì¬
     }
 }
+
+// »æÖÆ¡°num¡±×Ô¶¯Ä£Ê½°´Å¥£¬¸ù¾Ý flag ¿ØÖÆ°´Å¥ÏÔÊ¾×´Ì¬
 void automode_button(int flag)
 {
-    if(flag == PAINT)
+    if(flag == PAINT)  // ÆÕÍ¨»æÖÆ×´Ì¬
     {
-        clrmous(MouseX,MouseY);
-        printbox(5,380,95,419,DARKGRAY,1,3,3);
-        setcolor(DARKGRAY);
-        settextstyle(DEFAULT_FONT,HORIZ_DIR,2);
-        outtextxy(13,391," num ");
+        clrmous(MouseX, MouseY);  // Çå³ýÊó±ê¹ì¼£
+        printbox(5,380,95,419, DARKGRAY, 1,3,3);  // »æÖÆ»ÒÉ«°´Å¥¿ò
+        setcolor(DARKGRAY);  // ÉèÖÃÎÄ×ÖÑÕÉ«
+        settextstyle(DEFAULT_FONT, HORIZ_DIR, 2);  // ÉèÖÃ×ÖÌå
+        outtextxy(13,391, " num ");  // ÏÔÊ¾¡°num¡±
     }
-    else if(flag == LIGHT)
+    else if(flag == LIGHT)  // ¸ßÁÁ×´Ì¬
     {
-        clrmous(MouseX,MouseY);
-        printbox(5,380,95,419,BLUE,1,3,3);
-        setcolor(CYAN);
-        settextstyle(DEFAULT_FONT,HORIZ_DIR,2);
-        outtextxy(13,391," num ");
+        clrmous(MouseX, MouseY);  // Çå³ýÊó±ê¹ì¼£
+        printbox(5,380,95,419, BLUE, 1,3,3);  // »æÖÆÀ¶É«°´Å¥¿ò
+        setcolor(CYAN);  // ÉèÖÃÎÄ×ÖÑÕÉ«
+        settextstyle(DEFAULT_FONT, HORIZ_DIR, 2);  // ÉèÖÃ×ÖÌå
+        outtextxy(13,391, " num ");  // ÏÔÊ¾¡°num¡±
     }
-    else if(flag == DELETE)
+    else if(flag == DELETE)  // É¾³ý×´Ì¬
     {
-        setfillstyle(SOLID_FILL,WHITE);
-        bar(5,380,95,419);
+        setfillstyle(SOLID_FILL, WHITE);  // ÉèÖÃ°×É«Ìî³ä
+        bar(5,380,95,419);  // ²Á³ý°´Å¥ÇøÓò
     }
-    else if(flag == RECOVER)
+    else if(flag == RECOVER)  // »Ö¸´×´Ì¬
     {
-        automode_button(PAINT);
+        automode_button(PAINT);  // »Ö¸´ÎªÆÕÍ¨»æÖÆ×´Ì¬
     }
 }
+
+
+
+
+
 int detect_page(char *username ,char *nowfield,int language)
 {
     int record[21][26];
@@ -314,7 +340,7 @@ int detect_page(char *username ,char *nowfield,int language)
     {
         newmouse(&MouseX,&MouseY,&press);
 
-        if( mouse_press(5,130,95,169)==2 )//modeÎ´ï¿½ï¿½ï¿½5,130,95,169
+        if( mouse_press(5,130,95,169)==2 )//mode¦Ä???5,130,95,169
         {
             if( flag != 1 && num[1]!=10)
             {
@@ -325,7 +351,7 @@ int detect_page(char *username ,char *nowfield,int language)
                 mode_button(LIGHT);
             }
         }
-        else if( mouse_press(5,130,95,169)==1 )//modeï¿½ï¿½ï¿½
+        else if( mouse_press(5,130,95,169)==1 )//mode???
         {
             MouseS = 0;
             clrmous(MouseX,MouseY);
@@ -359,9 +385,9 @@ int detect_page(char *username ,char *nowfield,int language)
             }
             else if(presentmode[0]=='h' && routebutton_flag == 0 ) route_button(PAINT);
             
-            delay(50);//ï¿½ï¿½Ö¹ï¿½ï¿½ï¿½ï¿½ï¿½Ëµï¿½Ñ¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+            delay(50);//??????????????????
         }
-        else if( mouse_press(5,180,95,219)==2 )//startÎ´ï¿½ï¿½ï¿½
+        else if( mouse_press(5,180,95,219)==2 )//start¦Ä???
         {
             if( flag != 3 )
             {
@@ -372,7 +398,7 @@ int detect_page(char *username ,char *nowfield,int language)
                 start_button(LIGHT);
             }
         }
-        else if( mouse_press(5,180,95,219)==1 )//startï¿½ï¿½ï¿½5,180,95,219
+        else if( mouse_press(5,180,95,219)==1 )//start???5,180,95,219
         {
             MouseS = 0;
             clrmous(MouseX,MouseY);
@@ -398,7 +424,7 @@ int detect_page(char *username ,char *nowfield,int language)
             }
 
         }
-        else if( mouse_press(5,230,95,269)==2 )//pauseÎ´ï¿½ï¿½ï¿½
+        else if( mouse_press(5,230,95,269)==2 )//pause¦Ä???
         {
             if( flag != 4 )
             {
@@ -409,13 +435,13 @@ int detect_page(char *username ,char *nowfield,int language)
                 pause_button(LIGHT);
             }
         }
-        else if( mouse_press(5,230,95,269)==1 )//pauseï¿½ï¿½ï¿½
+        else if( mouse_press(5,230,95,269)==1 )//pause???
         {
             MouseS = 0;
             clrmous(MouseX,MouseY);
 
         }
-        else if( mouse_press(5,280,95,319)==2 )//chartÎ´ï¿½ï¿½ï¿½
+        else if( mouse_press(5,280,95,319)==2 )//chart¦Ä???
         {
             if( flag != 5 )
             {
@@ -426,7 +452,7 @@ int detect_page(char *username ,char *nowfield,int language)
                 chart_button(LIGHT);
             }
         }
-        else if( mouse_press(5,280,95,319)==1 )//chartï¿½ï¿½ï¿½
+        else if( mouse_press(5,280,95,319)==1 )//chart???
         {
             MouseS = 0;
             clrmous(MouseX,MouseY);
@@ -435,7 +461,7 @@ int detect_page(char *username ,char *nowfield,int language)
             delay(100);
             paint_field_right(record,nowfield,language);
         }
-        else if( mouse_press(595,5,630,40)==2 )//ï¿½Ë³ï¿½ï¿½ï¿½Î´ï¿½ï¿½ï¿½
+        else if( mouse_press(595,5,630,40)==2 )//?????¦Ä???
         {
             if( flag!=2 )
             {
@@ -446,14 +472,14 @@ int detect_page(char *username ,char *nowfield,int language)
                 back_button(LIGHT);
             }
         }
-        else if( mouse_press(595,5,630,40)==1 )//ï¿½Ë³ï¿½ï¿½ï¿½ï¿½
+        else if( mouse_press(595,5,630,40)==1 )//??????
         {
             MouseS = 0 ;
             clrmous(MouseX,MouseY);
             delay(100);
             return HOME;
         }
-        else if( mouse_press(15,20,90,60)==1 ) //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Öµï¿½ï¿½
+        else if( mouse_press(15,20,90,60)==1 ) //??????????
         {
             strcpy(compare , date );
             setfillstyle(SOLID_FILL,WHITE);
@@ -465,11 +491,11 @@ int detect_page(char *username ,char *nowfield,int language)
                 change_weather(weather);
                 put_calender_weather(weather);
                 recover_field(record,username,nowfield);
-                grow(record , atoi(date));//Ã¿ï¿½ï¿½ï¿½ï¿½ï¿½Ú¸Ä±ï¿½Ê±,ï¿½ï¿½Ë¢ï¿½ï¿½ï¿½Ò²ï¿½ï¿½Í¼
+                grow(record , atoi(date));//??????????,??????????
                 field_flag = 1 ;
             }
         }
-        else if( mouse_press(68,73,92,95)==1 )// ï¿½Ï¼ï¿½Í·
+        else if( mouse_press(68,73,92,95)==1 )// ????
         {
             strcpy(compare , date );
             setfillstyle(SOLID_FILL,WHITE);
@@ -484,7 +510,7 @@ int detect_page(char *username ,char *nowfield,int language)
             if(temp_date == 2 )
             {
                 if(strcmp(compare , date )!= 0  ) {
-                    grow(record , atoi(date));//Ã¿ï¿½ï¿½ï¿½ï¿½ï¿½Ú¸Ä±ï¿½Ê±,ï¿½ï¿½Ë¢ï¿½ï¿½ï¿½Ò²ï¿½ï¿½Í¼
+                    grow(record , atoi(date));//??????????,??????????
                     field_flag = 1 ;
                 }
             }
@@ -496,7 +522,7 @@ int detect_page(char *username ,char *nowfield,int language)
             }
             delay(200);
         }
-        else if( mouse_press(68,95,92,117)==1 )// ï¿½Â¼ï¿½Í·
+        else if( mouse_press(68,95,92,117)==1 )// ????
         {
             strcpy(compare , date );
             setfillstyle(SOLID_FILL,WHITE);
@@ -509,12 +535,12 @@ int detect_page(char *username ,char *nowfield,int language)
             change_weather(weather);
             put_calender_weather(weather);
             if(strcmp(compare , date )!= 0  ) {
-                grow(record , atoi(date));//Ã¿ï¿½ï¿½ï¿½ï¿½ï¿½Ú¸Ä±ï¿½Ê±,ï¿½ï¿½Ë¢ï¿½ï¿½ï¿½Ò²ï¿½ï¿½Í¼
+                grow(record , atoi(date));//??????????,??????????
                 field_flag = 1 ;
             }
             delay(200);
         }
-        else if( mouse_press(5,330,95,369)==2 && presentmode[0]=='h') //routeÎ´ï¿½ï¿½ï¿½
+        else if( mouse_press(5,330,95,369)==2 && presentmode[0]=='h') //route¦Ä???
         {
             if( flag != 6 )
             {
@@ -525,12 +551,12 @@ int detect_page(char *username ,char *nowfield,int language)
                 route_button(LIGHT);
             }
         }
-        else if( mouse_press(5,330,95,369)==1  && presentmode[0]=='h')//routeï¿½ï¿½ï¿½
+        else if( mouse_press(5,330,95,369)==1  && presentmode[0]=='h')//route???
         {
             MouseS = 0;
             clrmous(MouseX,MouseY);
 
-            if(handmode_flag == 1 ) //ï¿½ï¿½ï¿½ï¿½handï¿½ï¿½ï¿½Äµï¿½Í¼ ï¿½ï¿½Õµï¿½Í¼
+            if(handmode_flag == 1 ) //????hand?????? ?????
             {
                 paint_field_right(record , nowfield,language);
                 memset(route,0,sizeof(route));
@@ -539,7 +565,7 @@ int detect_page(char *username ,char *nowfield,int language)
             mode = 1 ;
             delay(200);
         }
-        else if( mouse_press(5,330,95,369)==2 && presentmode[0]=='a') //setÎ´ï¿½ï¿½ï¿½
+        else if( mouse_press(5,330,95,369)==2 && presentmode[0]=='a') //set¦Ä???
         {
             if( flag != 6 )
             {
@@ -550,7 +576,7 @@ int detect_page(char *username ,char *nowfield,int language)
                 set_button(LIGHT);
             }
         }
-        else if( mouse_press(5,330,95,369)==1  && presentmode[0]=='a')//setï¿½ï¿½ï¿½
+        else if( mouse_press(5,330,95,369)==1  && presentmode[0]=='a')//set???
         {
             MouseS = 0;
             clrmous(MouseX,MouseY);
@@ -558,7 +584,7 @@ int detect_page(char *username ,char *nowfield,int language)
             setinfo(username , drone_record ,pest_record , setting);
             paint_field_right(record,nowfield,language);
         }
-        else if( mouse_press(5,380,95,419)==2 && presentmode[0]=='a') //automodeÎ´ï¿½ï¿½ï¿½
+        else if( mouse_press(5,380,95,419)==2 && presentmode[0]=='a') //automode¦Ä???
         {
             if( flag != 7 && num[7]!=10)
             {
@@ -569,7 +595,7 @@ int detect_page(char *username ,char *nowfield,int language)
                 automode_button(LIGHT);
             }
         }
-        else if( mouse_press(5,380,95,419)==1  && presentmode[0]=='a')//automodeï¿½ï¿½ï¿½
+        else if( mouse_press(5,380,95,419)==1  && presentmode[0]=='a')//automode???
         {
             MouseS = 0;
             clrmous(MouseX,MouseY);
@@ -675,7 +701,7 @@ int detect_page(char *username ,char *nowfield,int language)
             num[7] = 0;
         }
 
-        if(mode == 1) //Ñ¡ï¿½ï¿½handï¿½ï¿½Ñ¡ï¿½ï¿½
+        if(mode == 1) //???hand?????
         {
             clrmous(MouseX,MouseY);
             setfillstyle(SOLID_FILL,WHITE);
@@ -687,7 +713,7 @@ int detect_page(char *username ,char *nowfield,int language)
             while(1)
             {
                 newmouse(&MouseX,&MouseY,&press);
-                if( mouse_press(110,50,630,470)==1 )//ï¿½ï¿½ï¿½Ú»ï¿½Í¼ï¿½ï¿½ï¿½ï¿½ï¿½Òµï¿½ï¿½
+                if( mouse_press(110,50,630,470)==1 )//??????????????
                 {
                     if(k==0) {
                         i = (470-MouseY)/20;
@@ -726,7 +752,7 @@ int detect_page(char *username ,char *nowfield,int language)
                     k++;
                     if(line_flag != 1 ) line_flag = 1 ;
                 }
-                if( mouse_press(5,330,95,369)==1 ) //routeï¿½ï¿½ï¿½
+                if( mouse_press(5,330,95,369)==1 ) //route???
                 {
                     route[k][0] = route[0][0];
                     route[k][1] = route[0][1];
@@ -752,6 +778,8 @@ int detect_page(char *username ,char *nowfield,int language)
         }
     }
 }
+
+
 void auto_simulate(int record[21][26], char *date_char ,char *username , char *nowfield , int automode ,struct droneinfo dronerecord[5],struct pesticideinfo pestrecord[3])
 {
     int date ,i,j,k, add = 1 , flag = 0 , startlight = 0 , pauselight = 0 ,random_weather;
@@ -769,7 +797,7 @@ void auto_simulate(int record[21][26], char *date_char ,char *username , char *n
     memset(num,0,sizeof(num));
     memset(house,0,sizeof(house));
 
-    date = atoi( date_char );//ï¿½ï¿½dateï¿½ì¿ªÊ¼
+    date = atoi( date_char );//??date???
     if(date != 1) {
         grow(record , date );
     }
@@ -834,7 +862,7 @@ void auto_simulate(int record[21][26], char *date_char ,char *username , char *n
             
             grow_oneday(record,date);
 
-            if(date % 3 == 0) //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+            if(date % 3 == 0) //???????
             {
                 setcolor(DARKGRAY);
                 settextstyle(DEFAULT_FONT,HORIZ_DIR,1);
@@ -852,7 +880,7 @@ void auto_simulate(int record[21][26], char *date_char ,char *username , char *n
                     fly_housenumber = k ;
                     for(i=0;i<k;i++)
                     {
-                        if( strlen(dronerecord[house[i].drone_index].name)==0  || strcmp(dronerecord[house[i].drone_index].weather , weather )==0 ) //ï¿½ï¿½ï¿½Ü·É»ï¿½ï¿½ß¸Ã·ï¿½ï¿½ï¿½Ã»ï¿½ï¿½ï¿½ï¿½ï¿½Ë»ï¿½
+                        if( strlen(dronerecord[house[i].drone_index].name)==0  || strcmp(dronerecord[house[i].drone_index].weather , weather )==0 ) //????????¡Â???????????
                         {
                             record[house[i].i][house[i].j] = 1 ;
                             fly_housenumber-- ;
@@ -873,7 +901,7 @@ void auto_simulate(int record[21][26], char *date_char ,char *username , char *n
             timecount = 0;
             date++ ;
         }
-        if( mouse_press(5,180,95,219)==2 )//startÎ´ï¿½ï¿½ï¿½
+        if( mouse_press(5,180,95,219)==2 )//start¦Ä???
         {
             if(startlight == 0)
             {
@@ -887,7 +915,7 @@ void auto_simulate(int record[21][26], char *date_char ,char *username , char *n
                 }
             }
         }
-        else if( mouse_press(5,180,95,219)==1 )//startï¿½ï¿½ï¿½5,180,95,219
+        else if( mouse_press(5,180,95,219)==1 )//start???5,180,95,219
         {
             MouseS = 0;
             clrmous(MouseX,MouseY);
@@ -900,7 +928,7 @@ void auto_simulate(int record[21][26], char *date_char ,char *username , char *n
             }
             delay(50);
         }
-        else if( mouse_press(5,230,95,269)==2 )//pauseÎ´ï¿½ï¿½ï¿½
+        else if( mouse_press(5,230,95,269)==2 )//pause¦Ä???
         {
             if(pauselight == 0)
             {
@@ -914,7 +942,7 @@ void auto_simulate(int record[21][26], char *date_char ,char *username , char *n
                 }
             }
         }
-        else if( mouse_press(5,230,95,269)==1 )//pauseï¿½ï¿½ï¿½
+        else if( mouse_press(5,230,95,269)==1 )//pause???
         {
             MouseS = 0;
             clrmous(MouseX,MouseY);
@@ -926,7 +954,7 @@ void auto_simulate(int record[21][26], char *date_char ,char *username , char *n
             }
             delay(50);
         }
-        else if( mouse_press(5,130,95,169)==1 )//modeï¿½ï¿½ï¿½
+        else if( mouse_press(5,130,95,169)==1 )//mode???
         {
             MouseS = 0;
             clrmous(MouseX,MouseY);
@@ -934,7 +962,7 @@ void auto_simulate(int record[21][26], char *date_char ,char *username , char *n
             delay(200);
             return ;
         }
-        else if( mouse_press(15,20,90,60)==1 ) //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Öµï¿½ï¿½
+        else if( mouse_press(15,20,90,60)==1 ) //??????????
         {
             setfillstyle(SOLID_FILL,WHITE);
             bar(11,25,90,69);
@@ -980,7 +1008,7 @@ void auto_simulate(int record[21][26], char *date_char ,char *username , char *n
                 grow(record , date );
             }
         }
-        else if( mouse_press(595,5,630,40)==2 )//ï¿½Ë³ï¿½ï¿½ï¿½Î´ï¿½ï¿½ï¿½
+        else if( mouse_press(595,5,630,40)==2 )//?????¦Ä???
         {
             if( pauselight == 1 )
             {
@@ -994,7 +1022,7 @@ void auto_simulate(int record[21][26], char *date_char ,char *username , char *n
                 }
             }
         }
-        else if( mouse_press(595,5,630,40)==1 )//ï¿½Ë³ï¿½ï¿½ï¿½ï¿½
+        else if( mouse_press(595,5,630,40)==1 )//??????
         {
             MouseS = 0 ;
             clrmous(MouseX,MouseY);
