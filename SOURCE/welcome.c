@@ -154,54 +154,64 @@ void drone_wing(int* drone_flag, int x, int y)
 
 
 
+// 函数说明：
+// 名称：welcome_page
+// 功能：程序欢迎界面，负责显示欢迎画面、无人机动画、鼠标事件检测和语言选择。
+// 输入参数：int *language —— 指向语言类型的指针，用于确定界面语言。
+// 返回值：根据用户点击行为返回不同值：1（进入主程序）、QUIT（退出）、WELCOME（重新加载欢迎页）。
 int welcome_page(int *language)
 {   
-    int colorset = 1;
-    int flag = 0;
-    int num1 = 0;
-    int num2 = 0;
-    int num3 = 0;
-    int drone_flag = 2;
-    int time = 0;
-    int now_language;
-    char *setlanguage[2] ={"CHINESE","ENGLISH"};
-    char choose_language[10];
-    memset(choose_language,0,sizeof(choose_language));
-    mouseinit();
-    cleardevice();
-    setbkcolor(BLACK);
+    int colorset = 1;  // 标题颜色切换变量
+    int flag = 0;      // 当前按钮状态标记
+    int num1 = 0;      // 按钮1是否被高亮标记
+    int num2 = 0;      // 按钮2是否被高亮标记
+    int num3 = 0;      // 按钮3是否被高亮标记
+    int drone_flag = 2; // 控制无人机翅膀动画的标记
+    int time = 0;      // 时间计数器，用于刷新动画
+    int now_language;  // 当前语言变量
+    char *setlanguage[2] ={"CHINESE","ENGLISH"};  // 支持的语言选项
+    char choose_language[10];  // 用于存储用户选择的语言
+    memset(choose_language,0,sizeof(choose_language));  // 初始化语言选择缓存
+    mouseinit();  // 初始化鼠标功能
+    cleardevice();  // 清除画面
+    setbkcolor(BLACK);  // 设置背景为黑色
 
-    now_language = (*language);
-    welcome_screen(now_language);
-    drone();
+    now_language = (*language);  // 获取当前语言设置
+    welcome_screen(now_language);  // 绘制欢迎页面
+    drone();  // 绘制无人机主体
+
     while(1)
     {   
+        // 定时刷新：每经过一段时间，清除无人机区并重绘
         if(time%250==0)
         {
-            clrmous(MouseX,MouseY);
-            setfillstyle(SOLID_FILL,BLACK);
-            bar(0,100,640,340);
-            drone();
+            clrmous(MouseX,MouseY);  // 清除鼠标残影
+            setfillstyle(SOLID_FILL,BLACK);  
+            bar(0,100,640,340);  // 擦除画布指定区域
+            drone();  // 重绘无人机
+            // 绘制4个无人机翅膀，位置固定
             drone_wing(&drone_flag,240,140);
             drone_wing(&drone_flag,400,140);
             drone_wing(&drone_flag,240,300);
             drone_wing(&drone_flag,400,300);
-            
         }
 
-        time++;
-        newmouse(&MouseX,&MouseY,&press);
-        put_title(&colorset,now_language);
+        time++;  // 时间递增
+        newmouse(&MouseX,&MouseY,&press);  // 获取鼠标当前状态
+        put_title(&colorset,now_language);  // 绘制动态标题
+
+        // 判断鼠标是否悬停在第1个按钮上
         if(mouse_press(30,360,210,460)==2)
         {   
-            if(flag!=1)
+            if(flag!=1)  // 如果当前未选中
             {
-                MouseS = 1;
+                MouseS = 1;  // 设置鼠标按下状态
                 flag = 1;
-                num1 = 1;
-                welcome_buttons_light(flag,now_language);
+                num1 = 1;  // 标记按钮1已被选中
+                welcome_buttons_light(flag,now_language);  // 高亮按钮
             }
         }
+        // 判断鼠标是否悬停在第2个按钮上
         else if(mouse_press(430,360,610,460)==2)
         {
             if(flag!=2)
@@ -212,6 +222,7 @@ int welcome_page(int *language)
                 welcome_buttons_light(flag,now_language);
             }
         }
+        // 判断鼠标是否悬停在第3个按钮上
         else if(mouse_press(230,360,410,460)==2)
         {
             if(flag!=3)
@@ -222,30 +233,35 @@ int welcome_page(int *language)
                 welcome_buttons_light(flag,now_language);
             }
         }
+        // 鼠标未悬停在任意按钮上，重置状态
         else
         {
             MouseS = 0;
             flag = 0;
         }
-        
 
+        // 点击第1个按钮：开始游戏
         if(mouse_press(30,360,210,460)==1)
         {
             return 1;
         }
+        // 点击第2个按钮：退出程序
         else if(mouse_press(430,360,610,460)==1)
         {
             return QUIT;
         }
+        // 点击第3个按钮：选择语言
         else if(mouse_press(230,360,410,460)==1)
         {
-            drop_down_menu(230,360,180,40,2,2,setlanguage,LIGHTGRAY,DARKGRAY,choose_language);
-            delay(100);
+            drop_down_menu(230,360,180,40,2,2,setlanguage,LIGHTGRAY,DARKGRAY,choose_language);  // 弹出下拉框
+            delay(100);  // 等待用户选择
+            // 用户选择中文
             if(strcmp(choose_language,"CHINESE")==0)
             {
-                (*language) = CHINESE;
+                (*language) = CHINESE;  // 更新语言设置
                 return WELCOME;
             }
+            // 用户选择英文
             else if(strcmp(choose_language,"ENGLISH")==0)
             {
                 (*language) = ENGLISH;
@@ -253,16 +269,19 @@ int welcome_page(int *language)
             }
         }
 
+        // 如果鼠标离开第1个按钮，恢复默认样式
         if(flag!=1&&num1==1)
         {
             welcome_buttons_recovery(num1,now_language);
             num1 = 0;
         }
+        // 鼠标离开第2个按钮，恢复默认样式
         else if(flag!=2&&num2==2)
         {
             welcome_buttons_recovery(num2,now_language);
             num2 = 0;
         }
+        // 鼠标离开第3个按钮，恢复默认样式
         else if(flag!=3&&num3==3)
         {
             welcome_buttons_recovery(num3,now_language);
@@ -271,96 +290,121 @@ int welcome_page(int *language)
     }
 }
 
-void welcome_buttons_light(int flag,int language)
+
+
+// 函数说明：
+// 名称：welcome_buttons_light
+// 功能：高亮显示按钮并更新按钮的文本内容，表示当前选中状态。
+// 输入参数：
+//     flag - 当前选中的按钮（1: 登录，2: 退出，3: 语言选择）
+//     language - 当前的语言设置，用于选择不同的语言文字。
+// 返回值：无
+void welcome_buttons_light(int flag, int language)
 {
-    clrmous(MouseX,MouseY);
-    if(flag==1)
+    clrmous(MouseX, MouseY);  // 清除鼠标当前位置的图形（去掉鼠标残影）
+
+    // 如果按钮1（登录）被选中，设置该按钮为高亮状态
+    if (flag == 1)
     {
-        printbox(30,360,210,460,YELLOW,1,5,5);
-        if(language == ENGLISH)
+        printbox(30, 360, 210, 460, YELLOW, 1, 5, 5);  // 绘制一个高亮框（黄色）表示按钮的选中状态
+        if (language == ENGLISH)
         {
-            setcolor(WHITE);
-            settextstyle( DEFAULT_FONT , HORIZ_DIR , 2);
-            outtextxy( 75 , 405 , "LOG_IN" );
+            setcolor(WHITE);  // 设置文本颜色为白色
+            settextstyle(DEFAULT_FONT, HORIZ_DIR, 2);  // 设置文本样式为默认字体，水平排列，字体大小为2
+            outtextxy(75, 405, "LOG_IN");  // 在按钮上显示“LOG_IN”
         }
-        else if(language == CHINESE)
+        else if (language == CHINESE)
         {
-            puthz(90,393,"登录",32,32,WHITE);
+            puthz(90, 393, "登录", 32, 32, WHITE);  // 在按钮上显示“登录” (中文)
         }
     }
-    else if(flag==2)
+    // 如果按钮2（退出）被选中，设置该按钮为高亮状态
+    else if (flag == 2)
     {
-        printbox(430,360,610,460,YELLOW,1,5,5);
-        if(language == ENGLISH)
+        printbox(430, 360, 610, 460, YELLOW, 1, 5, 5);  // 绘制一个高亮框（黄色）表示按钮的选中状态
+        if (language == ENGLISH)
         {
-            setcolor(WHITE);
-            settextstyle( DEFAULT_FONT , HORIZ_DIR , 2);
-            outtextxy( 495 , 405 , "QUIT" );
+            setcolor(WHITE);  // 设置文本颜色为白色
+            settextstyle(DEFAULT_FONT, HORIZ_DIR, 2);  // 设置文本样式为默认字体，水平排列，字体大小为2
+            outtextxy(495, 405, "QUIT");  // 在按钮上显示“QUIT”
         }
-        else if(language == CHINESE)
+        else if (language == CHINESE)
         {
-            puthz(485,393,"退出",32,32,WHITE);
+            puthz(485, 393, "退出", 32, 32, WHITE);  // 在按钮上显示“退出” (中文)
         }
     }
-    else if(flag==3)
+    // 如果按钮3（语言选择）被选中，设置该按钮为高亮状态
+    else if (flag == 3)
     {
-        printbox(230,360,410,460,YELLOW,1,5,5);
-        if(language == ENGLISH)
+        printbox(230, 360, 410, 460, YELLOW, 1, 5, 5);  // 绘制一个高亮框（黄色）表示按钮的选中状态
+        if (language == ENGLISH)
         {
-            setcolor(WHITE);
-            settextstyle( DEFAULT_FONT , HORIZ_DIR , 2);
-            outtextxy( 260,405,"LANGUAGE");
+            setcolor(WHITE);  // 设置文本颜色为白色
+            settextstyle(DEFAULT_FONT, HORIZ_DIR, 2);  // 设置文本样式为默认字体，水平排列，字体大小为2
+            outtextxy(260, 405, "LANGUAGE");  // 在按钮上显示“LANGUAGE”
         }
-        else if(language == CHINESE)
+        else if (language == CHINESE)
         {
-            puthz(287,393,"语言",32,32,WHITE);
+            puthz(287, 393, "语言", 32, 32, WHITE);  // 在按钮上显示“语言” (中文)
         }
     }
 }
 
-void welcome_buttons_recovery(int num,int language)
+
+// 函数说明：
+// 名称：welcome_buttons_recovery
+// 功能：恢复按钮的默认样式，点击后恢复为原始状态。
+// 输入参数：
+//     num - 当前按钮的编号（1: 登录，2: 退出，3: 语言选择）
+//     language - 当前的语言设置，用于选择不同的语言文字。
+// 返回值：无
+void welcome_buttons_recovery(int num, int language)
 {
-    clrmous(MouseX,MouseY);
-    if(num == 1)
+    clrmous(MouseX, MouseY);  // 清除鼠标当前位置的图形（去掉鼠标残影）
+    
+    // 如果按钮1（登录）被选中，恢复按钮1的原始样式
+    if (num == 1)
     {
-        printbox(30,360,210,460,WHITE,1,5,5);
-        if(language == ENGLISH)
+        printbox(30, 360, 210, 460, WHITE, 1, 5, 5);  // 绘制一个空白框表示按钮的恢复
+        if (language == ENGLISH)
         {
-            setcolor(DARKGRAY);
-            settextstyle( DEFAULT_FONT , HORIZ_DIR , 2);
-            outtextxy( 75 , 405 , "LOG_IN" );
+            setcolor(DARKGRAY);  // 设置文本颜色为暗灰色
+            settextstyle(DEFAULT_FONT, HORIZ_DIR, 2);  // 设置文本样式为默认字体，水平排列，字体大小为2
+            outtextxy(75, 405, "LOG_IN");  // 在按钮上显示“LOG_IN”
         }
-        else if(language == CHINESE)
+        else if (language == CHINESE)
         {
-            puthz(90,393,"登录",32,32,DARKGRAY);
+            puthz(90, 393, "登录", 32, 32, DARKGRAY);  // 在按钮上显示“登录” (中文)
         }
     }
-    else if(num == 2)
+    // 如果按钮2（退出）被选中，恢复按钮2的原始样式
+    else if (num == 2)
     {
-        printbox(430,360,610,460,WHITE,1,5,5);
-        if(language == ENGLISH)
+        printbox(430, 360, 610, 460, WHITE, 1, 5, 5);  // 绘制一个空白框表示按钮的恢复
+        if (language == ENGLISH)
         {
-            setcolor(DARKGRAY);
-            settextstyle( DEFAULT_FONT , HORIZ_DIR , 2);
-            outtextxy( 495 , 405 , "QUIT" );
+            setcolor(DARKGRAY);  // 设置文本颜色为暗灰色
+            settextstyle(DEFAULT_FONT, HORIZ_DIR, 2);  // 设置文本样式为默认字体，水平排列，字体大小为2
+            outtextxy(495, 405, "QUIT");  // 在按钮上显示“QUIT”
         }
-        else if(language == CHINESE)
+        else if (language == CHINESE)
         {
-            puthz(485,393,"退出",32,32,DARKGRAY);
+            puthz(485, 393, "退出", 32, 32, DARKGRAY);  // 在按钮上显示“退出” (中文)
         }
     }
-    else if(num == 3)
+    // 如果按钮3（语言选择）被选中，恢复按钮3的原始样式
+    else if (num == 3)
     {
-        printbox(230,360,410,460,WHITE,1,5,5);
-        if(language == ENGLISH)
+        printbox(230, 360, 410, 460, WHITE, 1, 5, 5);  // 绘制一个空白框表示按钮的恢复
+        if (language == ENGLISH)
         {
-            setcolor(DARKGRAY);
-            settextstyle( DEFAULT_FONT , HORIZ_DIR , 2);
-            outtextxy( 260,405,"LANGUAGE");
+            setcolor(DARKGRAY);  // 设置文本颜色为暗灰色
+            settextstyle(DEFAULT_FONT, HORIZ_DIR, 2);  // 设置文本样式为默认字体，水平排列，字体大小为2
+            outtextxy(260, 405, "LANGUAGE");  // 在按钮上显示“LANGUAGE”
         }
-        else if(language == CHINESE)
+        else if (language == CHINESE)
         {
-            puthz(287,393,"语言",32,32,DARKGRAY);
+            puthz(287, 393, "语言", 32, 32, DARKGRAY);  // 在按钮上显示“语言” (中文)
         }
     }
 }
