@@ -2,75 +2,92 @@
 #include "drone.h"
 #include "main.h"
 
+/**
+ * 显示无人机界面，根据语言绘制按钮文字
+ */
 void drone_screen(int language)
 {
-    back_button(PAINT);
+    back_button(PAINT);  // 返回按钮
 
-    put_drone2(12,140,DARKGRAY,LIGHTGRAY,15);
-    printbox(300,60,550,200,DARKGRAY,1,5,5);
-    printbox(300,260,550,400,DARKGRAY,1,5,5);
-    
-    if(language == ENGLISH ){
-        setcolor(DARKGRAY);
-        settextstyle(DEFAULT_FONT,HORIZ_DIR,4);
-        outtextxy(330,117,"CREATE");
-        outtextxy(345,317,"DRONE");
-    }
-    else if(language == CHINESE)
+    put_drone2(12, 140, DARKGRAY, LIGHTGRAY, 15);  // 绘制无人机图形
+    printbox(300, 60, 550, 200, DARKGRAY, 1, 5, 5);   // 上框
+    printbox(300, 260, 550, 400, DARKGRAY, 1, 5, 5);  // 下框
+
+    if (language == ENGLISH)
     {
-        puthz(345,115,"录入无人机",32,32,DARKGRAY);
-        puthz(345,315,"管理无人机",32,32,DARKGRAY);
+        setcolor(DARKGRAY);
+        settextstyle(DEFAULT_FONT, HORIZ_DIR, 4);
+        outtextxy(330, 117, "CREATE");
+        outtextxy(345, 317, "DRONE");
+    }
+    else if (language == CHINESE)
+    {
+        puthz(345, 115, "录入无人机", 32, 32, DARKGRAY);
+        puthz(345, 315, "管理无人机", 32, 32, DARKGRAY);
     }
 }
 
+
+/**
+ * 显示文件列表界面，绘制表格结构和表头（支持中英文）
+ * @param language 当前语言（ENGLISH 或 CHINESE）
+ */
 void open_file2(int language)
 {
     int i;
-    clrmous(MouseX,MouseY);
-    setfillstyle(SOLID_FILL,CYAN);
-    bar(50,50,590,415);
-    setfillstyle(SOLID_FILL,BLUE);
-    for(i=0;i<10;i++)
+
+    clrmous(MouseX, MouseY);  // 清除鼠标残影
+
+    setfillstyle(SOLID_FILL, CYAN);
+    bar(50, 50, 590, 415);    // 绘制整体背景区域
+
+    setfillstyle(SOLID_FILL, BLUE);
+    for (i = 0; i < 10; i++)  // 绘制每一行分隔线
     {
-        bar(50,50+i*30,590,50+i*30+5);
+        bar(50, 50 + i * 30, 590, 50 + i * 30 + 5);
     }
-    bar(50,350,590,355);
-    bar(50,410,590,415);
-    bar(50,50,55,415);
-    bar(585,50,590,415);
-    bar(140,50,145,350);
-    bar(230,50,235,350);
-    bar(320,50,325,350);
-    bar(410,50,415,350);
-    bar(500,50,505,350);
 
-    put_arrow(65,363,DARKGRAY,5,LEFTARROW);  //(65,363,150,403)
-    put_arrow(495,363,DARKGRAY,5,RIGHTARROW); //(495,363,580,403)
+    // 绘制表格底线、外框和列分隔线
+    bar(50, 350, 590, 355);
+    bar(50, 410, 590, 415);
+    bar(50, 50, 55, 415);
+    bar(585, 50, 590, 415);
+    bar(140, 50, 145, 350);
+    bar(230, 50, 235, 350);
+    bar(320, 50, 325, 350);
+    bar(410, 50, 415, 350);
+    bar(500, 50, 505, 350);
 
-    
-    if(language == ENGLISH )
+    // 绘制左右翻页箭头
+    put_arrow(65, 363, DARKGRAY, 5, LEFTARROW);
+    put_arrow(495, 363, DARKGRAY, 5, RIGHTARROW);
+
+    // 表头内容
+    if (language == ENGLISH)
     {
         setcolor(DARKGRAY);
-        settextstyle(DEFAULT_FONT,HORIZ_DIR,2);
-        outtextxy(65,60,"NAME");
-        outtextxy(180,60,"M");
-        outtextxy(270,60,"N");
-        outtextxy(360,60,"W");
-        outtextxy(450,60,"T");
-        outtextxy(540,60,"P");
-
+        settextstyle(DEFAULT_FONT, HORIZ_DIR, 2);
+        outtextxy(65, 60, "NAME");
+        outtextxy(180, 60, "M");
+        outtextxy(270, 60, "N");
+        outtextxy(360, 60, "W");
+        outtextxy(450, 60, "T");
+        outtextxy(540, 60, "P");
     }
-    else if(language == CHINESE )
+    else if (language == CHINESE)
     {
-        puthz(80,60,"名称",16,16,DARKGRAY);
-        puthz(170,60,"质量",16,16,DARKGRAY);
-        puthz(260,60,"机翼",16,16,DARKGRAY);
-        puthz(350,60,"天气",16,16,DARKGRAY);
-        puthz(440,60,"时间",16,16,DARKGRAY);
-        puthz(530,60,"功率",16,16,DARKGRAY);
+        puthz(80, 60, "名称", 16, 16, DARKGRAY);
+        puthz(170, 60, "质量", 16, 16, DARKGRAY);
+        puthz(260, 60, "机翼", 16, 16, DARKGRAY);
+        puthz(350, 60, "天气", 16, 16, DARKGRAY);
+        puthz(440, 60, "时间", 16, 16, DARKGRAY);
+        puthz(530, 60, "功率", 16, 16, DARKGRAY);
     }
-    back_button(PAINT);
+
+    back_button(PAINT);  // 绘制返回按钮
 }
+
+
 
 
 int drone_page(char *username,char *drone_name_now,DRONEINFO *drone,int language)
@@ -143,6 +160,7 @@ int drone_page(char *username,char *drone_name_now,DRONEINFO *drone,int language
     put_crop1(10,10,CROP,HEALTHY);
     drone_screen(language);
     mouseinit();
+    
     while(1)
     {
         newmouse(&MouseX,&MouseY,&press);

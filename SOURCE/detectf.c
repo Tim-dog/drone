@@ -1,51 +1,82 @@
 #include "public.h"
 #include "detectf.h"
 
+
+/**
+ * Ëæ»ú¸Ä±äÌìÆø×´Ì¬£¨·µ»ØÖµĞ´Èë×Ö·û´® weather£©
+ * @param weather   Êä³ö²ÎÊı£¬¸³ÖµÎª "SUN" / "RAIN" / "SNOW" / "CLOUD"
+ */
 void change_weather(char *weather)
 {
-    int random_weather ;
+    int random_weather;
+
+    // Ô­±¾ÓÃÓÚÉèÖÃËæ»úÖÖ×Ó
     // srand((unsigned)time(NULL));
-    random_weather = rand() % 100 ;
+
+    random_weather = rand() % 100;
+
+    // Ôø³¢ÊÔÊ¹ÓÃÏµÍ³Ê±¼ä×ö¸³ÖµµÄ´úÂë£¬±£Áô±¸ÓÃ£º
     // time_t t;
     // time(&t);
     // weather = (int)t ;
-    if(random_weather <= 20 ) {
-        strcpy(weather,"SUN");
+
+    // ¸ù¾İ¸ÅÂÊËæ»úÇĞ»»ÌìÆø
+    if (random_weather <= 20) {
+        strcpy(weather, "SUN");
     }
-    else if(random_weather >20 && random_weather <= 40 ) {
-        strcpy(weather,"RAIN");
+    else if (random_weather > 20 && random_weather <= 40) {
+        strcpy(weather, "RAIN");
     }
-    else if(random_weather > 40 && random_weather <=50 ) {
-        strcpy(weather,"SNOW");
+    else if (random_weather > 40 && random_weather <= 50) {
+        strcpy(weather, "SNOW");
     }
     else {
-        strcpy(weather,"CLOUD");
+        strcpy(weather, "CLOUD");
     }
-    return ;
+
+    return;
 }
-void recover_field(int record[21][26],char *username , char *nowfield )
+
+
+
+
+/**
+ * ´ÓÖ¸¶¨Â·¾¶¶ÁÈ¡±£´æµÄÅ©ÌïÊı¾İ£¬»Ö¸´µ½ record Êı×éÖĞ
+ * @param record     ¶şÎ¬Êı×é£¬ÓÃÓÚ´æ´¢»Ö¸´ºóµÄÅ©Ìï×´Ì¬£¨21ĞĞ¡Á26ÁĞ£©
+ * @param username   µ±Ç°ÓÃ»§Ãû³Æ£¨ÓÃÓÚÆ´½ÓÂ·¾¶£©
+ * @param nowfield   µ±Ç°µØ¿éÃû£¨ÎÄ¼şÃû£©
+ */
+void recover_field(int record[21][26], char *username, char *nowfield)
 {
-    
-    int i,j ;
-    char path[100]="C:\\DATA\\";
+    int i, j;
+    char path[100] = "C:\\DATA\\";
     FILE *fp;
 
-    strcat(path,username);
-    strcat(path,"\\FIELD\\");
-    strcat(path,nowfield);
-    if ( (fp = fopen(path,"rb")) != NULL )
+    // ¹¹½¨×Ö¶ÎÂ·¾¶ C:\DATA\ÓÃ»§Ãû\FIELD\µØ¿éÃû
+    strcat(path, username);
+    strcat(path, "\\FIELD\\");
+    strcat(path, nowfield);
+
+    // ³¢ÊÔ´ò¿ª¶ÔÓ¦Êı¾İÎÄ¼ş½øĞĞ¶ÁÈ¡£¨ÒÔ¶ş½øÖÆĞÎÊ½£©
+    if ((fp = fopen(path, "rb")) != NULL)
     {
-        for(i=0; i<21 ;i++ )
+        for (i = 0; i < 21; i++)
         {
-            fread( record[i],sizeof(int), 26 ,fp);
+            fread(record[i], sizeof(int), 26, fp);  // Ã¿ĞĞ¶ÁÈë26¸öÕûĞÍ
         }
     }
-    else 
+    else
     {
+        // Ô­Ê¼µ÷ÊÔ´úÂë£¬¿ÉÓÃÓÚÊä³öÎÄ¼ş´ò¿ªÊ§°ÜÔ­Òò£º
         // perror("error in opening fieldfile!");
     }
+
+    // ÎŞÂÛ¶ÁÈ¡³É¹¦Óë·ñ£¬ÎÄ¼şÖ¸ÕëĞè¹Ø±Õ
     fclose(fp);
 }
+
+
+
 void grow(int record[21][26] , int date ) //reord´Ó×î³õÊ¼×´Ì¬£¬Ö±½Ó¼ÆËãdate×´Ì¬Ê±ÏÖÏó
 {
     int i,j,k,x,y,random_grow, random_health , state , health ,crop;
@@ -161,6 +192,8 @@ void grow(int record[21][26] , int date ) //reord´Ó×î³õÊ¼×´Ì¬£¬Ö±½Ó¼ÆËãdate×´Ì¬Ê
         }
     }
 }
+
+
 void grow_oneday(int record[21][26] ,int date)
 {
     int random_sick ,random_state ,health , state ,one_place , ten_place ,date_one,date_ten,crop = -1;
@@ -305,6 +338,8 @@ void grow_oneday(int record[21][26] ,int date)
         }
     }
 }
+
+
 void find_house(int record[21][26] , int houserecord[5][2])
 {
     int i,j,k ;
@@ -341,6 +376,8 @@ void find_house(int record[21][26] , int houserecord[5][2])
         }
     }
 }
+
+
 void find_house_xy(int record[21][26] , Point houserecord[5])
 {
     int i,j,k ,x,y;
@@ -385,6 +422,8 @@ void find_house_xy(int record[21][26] , Point houserecord[5])
         }
     }
 }
+
+
 int find_house_number(int record[21][26] )
 {
     int i,j,k ;
@@ -414,6 +453,8 @@ int find_house_number(int record[21][26] )
     }
     return k ;
 }
+
+
 Point find_closest_house(int record[21][26])
 {
     Point house ;
@@ -442,6 +483,8 @@ Point find_closest_house(int record[21][26])
     }
     return house ;
 }
+
+
 void setinfo(char *username,struct droneinfo dronerecord[5],struct pesticideinfo pestrecord[3],int setting[2])
 {
     int i;
