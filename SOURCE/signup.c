@@ -216,10 +216,10 @@ void show_rule()
     void *rule_buffer;
     int flag;
 
-    size = imagesize(180, 180, 480, 300);  // 获取规则区域的图像大小
+    size = imagesize(80, 150, 560, 300);  // 获取规则区域的图像大小
     rule_buffer = malloc(size);  // 为规则区域图像分配内存
     if(rule_buffer != NULL)
-        getimage(180, 180, 480, 300, rule_buffer);  // 获取规则区域的图像
+        getimage(80, 150, 560, 300, rule_buffer);  // 获取规则区域的图像
     else
     {
         // 错误处理，未使用
@@ -227,30 +227,30 @@ void show_rule()
 
     // 绘制规则显示区域
     setfillstyle(SOLID_FILL, LIGHTBLUE);
-    bar(180, 180, 480, 300);  // 绘制背景
+    bar(80, 150, 560, 300);  // 绘制背景
     setfillstyle(SOLID_FILL, BLUE);
-    bar(180, 180, 190, 300);  // 绘制左边蓝色边框
-    bar(180, 180, 480, 190);  // 绘制顶部蓝色边框
-    bar(180, 290, 480, 300);  // 绘制底部蓝色边框
-    bar(470, 180, 480, 300);  // 绘制右边蓝色边框
+    bar(80, 150, 90, 300);  // 绘制左边蓝色边框
+    bar(80, 150, 560, 160);  // 绘制顶部蓝色边框
+    bar(80, 290, 560, 300);  // 绘制底部蓝色边框
+    bar(550,150, 560, 300);  // 绘制右边蓝色边框
 
     // 绘制红色的关闭按钮
     setcolor(RED);
     setlinestyle(SOLID_LINE, 0, NORM_WIDTH);
-    line(470, 180, 480, 180);  // 上边线
-    line(470, 180, 470, 190);  // 左边线
-    line(480, 180, 480, 190);  // 右边线
-    line(470, 190, 480, 190);  // 下边线
-    line(470, 180, 480, 190);  // 左上到右下的对角线
-    line(470, 190, 480, 180);  // 右上到左下的对角线
+    line(550, 150, 560, 150);  // 上边线
+    line(550, 150, 550, 160);  // 左边线
+    line(560, 150, 560, 160);  // 右边线
+    line(550, 160, 560, 160);  // 下边线
+    line(550, 150, 560, 160);  // 左上到右下的对角线
+    line(560, 150, 550, 160);  // 右上到左下的对角线
 
     // 显示密码规则
-    settextstyle(DEFAULT_FONT, HORIZ_DIR, 1);  // 设置字体样式
-    outtextxy(195, 215, "THE PASSWORD MUST INCLUDE:");  // 显示密码必须包含的内容
-    outtextxy(195, 225, "1.CAPITALIZED LETTER");
-    outtextxy(195, 235, "2.LOWERCASE LETTER");
-    outtextxy(195, 245, "3.NUMBER");
-    outtextxy(195, 255, "4.AT LEAST 6 CHARACTERS");
+    settextstyle(DEFAULT_FONT, HORIZ_DIR, 2);  // 设置字体样式
+    outtextxy(105, 180, "The Password Must Include:");  // 显示密码必须包含的内容
+    outtextxy(105, 200, "1.Capitalized Letter");
+    outtextxy(105, 220, "2.Lowercase Letter");
+    outtextxy(105, 240, "3.Number");
+    outtextxy(105, 260, "4.At Least 6 Characters");
 
     mouseinit();  // 初始化鼠标
 
@@ -258,7 +258,7 @@ void show_rule()
     while(1)
     {
         newmouse(&MouseX, &MouseY, &press);
-        if(mouse_press(470, 180, 480, 190) == 2)
+        if(mouse_press(550, 150, 560, 160) == 2)
         {
             if(flag != 1)
             {
@@ -266,10 +266,10 @@ void show_rule()
                 flag = 1;
             }
         }
-        else if(mouse_press(470, 180, 480, 190) == 1)  // 点击关闭按钮
+        else if(mouse_press(550, 150, 560, 160) == 1)  // 点击关闭按钮
         {
             clrmous(MouseX, MouseY);  // 清除鼠标位置
-            putimage(180, 180, rule_buffer, COPY_PUT);  // 恢复规则区域图像
+            putimage(80, 150, rule_buffer, COPY_PUT);  // 恢复规则区域图像
             free(rule_buffer);  // 释放内存
             delay(60);  // 延时
             break;  // 退出循环

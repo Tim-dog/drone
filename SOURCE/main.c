@@ -8,7 +8,7 @@
  */
 void main()
 {
-    int language = ENGLISH;               // 默认语言为英文
+    int language = CHINESE;               // 默认语言为英文
     int gdriver = VGA;                    // 图形驱动
     int gmode = VGAHI;                    // 图形模式
     int page = WELCOME;                   // 当前页面，初始为欢迎页
@@ -36,6 +36,8 @@ void main()
                 page = signup_page(language);                // 注册界面
                 break;
 
+
+
             case HOME:
                 page = home_page(temp, language);            // 主菜单界面
                 break;
@@ -55,7 +57,7 @@ void main()
             case DETECTOR:
                 page = detect_page(temp->name, now_field, language); // 检测设备界面
                 break;
-
+                
             case DRAW_FIELD:
                 page = draw_field_page(temp->name, now_field, language); // 农田绘制
                 break;
