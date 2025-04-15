@@ -14,6 +14,7 @@ void mode_button(int flag);
 void chart_button(int flag);
 void route_button(int flag);
 void start_button(int flag);
+
 void detect_screen(int record[21][26] , char *nowfield ,int language);
 int detect_page(char *username,char *nowfield,int language);
 void auto_simulate(int record[21][26], char *date_char ,char *username , char *nowfield , int automode ,struct droneinfo dronerecord[5],struct pesticideinfo pestrecord[3]);

@@ -330,6 +330,8 @@ int detect_page(char *username ,char *nowfield,int language)
 
     detect_screen(record , nowfield,language);
     mouseinit();
+
+    
     if( strlen(date) != 0 ) {
         put_calender_number(date);
         change_weather(weather);
