@@ -2,200 +2,251 @@
 #include "main.h"
 #include "public.h"
 
+/*
+ * 函数：pesticide_screen
+ * 功能：绘制农药管理页面的界面元素
+ * 参数：
+ *   language —— 当前语言环境（ENGLISH 或 CHINESE）
+ */
 void pesticide_screen(int language)
 {
-    setbkcolor(WHITE);
-    printbox(310,20,590,100,DARKGRAY,1,5,5);
-    printbox(310,140,590,220,DARKGRAY,1,5,5);
-    printbox(310,260,590,340,DARKGRAY,1,5,5);
-    printbox(310,380,590,460,DARKGRAY,1,5,5);
-    printbox(50,400,285,465,DARKGRAY,1,5,5);
-    put_Erlenmeyer_flask(70,0,0,9);
+    setbkcolor(WHITE); // 设置背景为白色
 
-    if(language == ENGLISH ){
-        setcolor(DARKGRAY);
-        settextstyle(DEFAULT_FONT,HORIZ_DIR,3);
-        outtextxy(347,50,"PESTICIDE");
-        outtextxy(405,170,"NAME");
-        outtextxy(382,290,"PERIOD");
-        outtextxy(332,410,"PEST STYLE");
-        outtextxy(143,425,"OK");
-    }
-    else if(language == CHINESE)
+    // 绘制农药信息输入框区域
+    printbox(310, 20, 590, 100, DARKGRAY, 1, 5, 5);    // 标题框
+    printbox(310, 140, 590, 220, DARKGRAY, 1, 5, 5);   // 药品名称框
+    printbox(310, 260, 590, 340, DARKGRAY, 1, 5, 5);   // 喷洒周期框
+    printbox(310, 380, 590, 460, DARKGRAY, 1, 5, 5);   // 虫害种类框
+    printbox(50, 400, 285, 465, DARKGRAY, 1, 5, 5);    // 确认按钮框
+
+    put_Erlenmeyer_flask(70, 0, 0, 9); // 绘制三角瓶图案装饰
+
+    // 文字内容根据语言选择
+    if (language == ENGLISH)
     {
-        puthz(350,50,"管理农药",32,32,DARKGRAY);
-        puthz(350,170,"药品名称",32,32,DARKGRAY);
-        puthz(350,290,"喷洒周期",32,32,DARKGRAY);
-        puthz(350,410,"虫害种类",32,32,DARKGRAY);
-        puthz(143,425,"确认",32,32,DARKGRAY);
+        setcolor(DARKGRAY);
+        settextstyle(DEFAULT_FONT, HORIZ_DIR, 3);
+        outtextxy(347, 50, "PESTICIDE");
+        outtextxy(405, 170, "NAME");
+        outtextxy(382, 290, "PERIOD");
+        outtextxy(332, 410, "PEST STYLE");
+        outtextxy(143, 425, "OK");
+    }
+    else if (language == CHINESE)
+    {
+        puthz(350, 50, "管理农药", 32, 32, DARKGRAY);
+        puthz(350, 170, "药品名称", 32, 32, DARKGRAY);
+        puthz(350, 290, "喷洒周期", 32, 32, DARKGRAY);
+        puthz(350, 410, "虫害种类", 32, 32, DARKGRAY);
+        puthz(143, 425, "确认", 32, 32, DARKGRAY);
     }
 
-    setfillstyle(SOLID_FILL,DARKGRAY);
-    bar(55,350,282,355);
-    bar(55,350,60,380);
-    bar(277,350,282,380);
-    bar(55,375,282,380);
+    // 绘制图形化的瓶子边框
+    setfillstyle(SOLID_FILL, DARKGRAY);
+    bar(55, 350, 282, 355); // 顶边
+    bar(55, 350, 60, 380);  // 左边
+    bar(277, 350, 282, 380); // 右边
+    bar(55, 375, 282, 380);  // 底边
 
-
+    // 页面装饰字符
     setcolor(LIGHTGRAY);
-    settextstyle(DEFAULT_FONT,HORIZ_DIR,6);
-    outtextxy(150,250,"X");
+    settextstyle(DEFAULT_FONT, HORIZ_DIR, 6);
+    outtextxy(150, 250, "X"); // 大写 X 字体装饰
 
+    // 绘制返回按钮
     back_button(PAINT);
-
 }
 
+
+/*
+ * 函数：open_file3
+ * 功能：绘制文件打开界面（文件列表框 + 边框 + 翻页箭头 + 返回按钮）
+ */
 void open_file3()
 {
     int i;
-    setfillstyle(SOLID_FILL,LIGHTBLUE);
-    bar(60,60,580,420);
-    setfillstyle(SOLID_FILL,BLUE);
-    bar(60,60,580,65);
-    bar(60,60,65,420);
-    bar(575,60,580,420);
-    bar(60,415,580,420);
-    for(i=0;i<6;i++)
+
+    // 背景主区域
+    setfillstyle(SOLID_FILL, LIGHTBLUE);
+    bar(60, 60, 580, 420); // 主背景框
+
+    // 边框填充
+    setfillstyle(SOLID_FILL, BLUE);
+    bar(60, 60, 580, 65);   // 上边框
+    bar(60, 60, 65, 420);   // 左边框
+    bar(575, 60, 580, 420); // 右边框
+    bar(60, 415, 580, 420); // 下边框
+
+    // 绘制分隔线（6行文件名位置）
+    for (i = 0; i < 6; i++)
     {
-        bar(60,60+(i+1)*50,580,65+(i+1)*50);
+        bar(60, 60 + (i + 1) * 50, 580, 65 + (i + 1) * 50);
     }
 
-    put_arrow(70,370,DARKGRAY,5,LEFTARROW); //(70,370,155,410)
-    put_arrow(490,370,DARKGRAY,5,RIGHTARROW); //(490,370,575,410)
+    // 翻页按钮（左箭头 & 右箭头）
+    put_arrow(70, 370, DARKGRAY, 5, LEFTARROW);   // 左翻页按钮
+    put_arrow(490, 370, DARKGRAY, 5, RIGHTARROW); // 右翻页按钮
+
+    // 右上角“X”返回按钮
     back_button(PAINT);
 }
 
-int pesticide_page(char *username,char *now_pesticide,int language)
-{
-    int flag = 0;
-    int mode = 0;
-    long long int time=1;
-    int style = 0;
-    int num[8];
-    char string[80] = "C:\\DATA\\";
-    char stringnow[80];
-    int ifbegin = 0;
-    int percent = 0,draw_percent = 0;
-    struct pesticideinfo pesticide;
-    FILE *fp;
-    char *peststyle[2]={"LOCUST","LADYBUG"};
 
-    int file_time = 0,file_number;
-    int pagemax = 0,page = 0;
-    int i = 0;
-    int file_flag = 0;
-    int filenum[12] = {1,1,1,1,1,1,1,1,1,1,1,1};
-    int done;
-    struct ffblk ffblk;  
-    char stringall[80];
-    char pesticide_list[20][20];
 
-    char ceshi[100];
 
-    memset(pesticide.name,0,sizeof(pesticide.name));
-    memset(pesticide.period,0,sizeof(pesticide.period));
-    memset(pesticide.pest_style,0,sizeof(pesticide.pest_style));
-    memset(pesticide_list,0,sizeof(pesticide_list));
+/*
+ * 函数名：pesticide_page
+ * 功能：农药信息页面，管理农药的添加、编辑与选择，含中英文支持及鼠标交互
+ * 参数：
+ *   username —— 当前用户名，用于定位用户文件夹
+ *   now_pesticide —— 当前选中的农药名称，作为传入与返回值
+ *   language —— 语言类型（CHINESE / ENGLISH）
+ * 返回值：
+ *   页面跳转标志（如返回 HOME 表示回到主页）
+ */
 
-    strcat(string,username);
-    strcat(string,"\\PESTICIDE");
-    strcpy(stringall,string);
-    strcat(stringall,"\\*.*");
+ int pesticide_page(char *username,char *now_pesticide,int language)
+ {
+     // 一些控制变量
+     int flag = 0;
+     int mode = 0;
+     long long int time = 1;
+     int style = 0;
+     int num[8];
+ 
+     // 路径与数据缓冲
+     char string[80] = "C:\\DATA\\";
+     char stringnow[80];
+     char stringall[80];
+     char ceshi[100];  // 用于调试或路径显示
+ 
+     int ifbegin = 0;               // 是否开始动画
+     int percent = 0, draw_percent = 0; // 动画百分比控制
+ 
+     struct pesticideinfo pesticide;
+     FILE *fp;
+     char *peststyle[2] = {"LOCUST", "LADYBUG"}; // 虫害种类选择
+ 
+     // 文件读取相关变量
+     int file_time = 0, file_number;
+     int pagemax = 0, page = 0;
+     int i = 0;
+     int file_flag = 0;
+     int filenum[12] = {1,1,1,1,1,1,1,1,1,1,1,1};  // 按钮状态
+     int done;
+     struct ffblk ffblk;  
+     char pesticide_list[20][20]; // 最多 20 个农药文件名
+ 
+     // 初始化数据结构与路径
+     memset(pesticide.name, 0, sizeof(pesticide.name));
+     memset(pesticide.period, 0, sizeof(pesticide.period));
+     memset(pesticide.pest_style, 0, sizeof(pesticide.pest_style));
+     memset(pesticide_list, 0, sizeof(pesticide_list));
+ 
+     strcat(string, username);
+     strcat(string, "\\PESTICIDE");
+     strcpy(stringall, string);
+     strcat(stringall, "\\*.*");
+ 
+     // 如果农药目录不存在，尝试创建
+     if(access(string, 0) == -1)
+     {
+         if(mkdir(string) != 0)
+         {
+             // 创建失败直接退出
+             delay(2000);
+             exit(1);
+         }
+     }
+ 
+     // 如果当前有选中的农药名称，则尝试读取文件中的数据
+     if(strlen(now_pesticide) > 4)
+     {
+         strcpy(stringnow, string);
+         strcat(stringnow, "\\");
+         strcat(stringnow, now_pesticide);
+ 
+         if((fp = fopen(stringnow, "rb+")) != NULL)
+         {
+             fread(&pesticide, sizeof(pesticide), 1, fp);
+             fclose(fp);
+         }
+     }
+ 
+     // 进入界面初始化绘制
+     clrmous(MouseX, MouseY);
+     cleardevice();
+     pesticide_screen(language);
+ 
+     // 清除输入框内容
+     setcolor(DARKGRAY);
+     setfillstyle(SOLID_FILL, WHITE);
+     bar(320,270,580,330);
+     bar(320,390,580,450);
+     bar(320,150,580,210);
+ 
+     // 如果农药信息不为空则显示，反之提示“名称/周期/虫害种类”
+     if(strlen(pesticide.name) != 0)
+     {
+         settextstyle(DEFAULT_FONT,HORIZ_DIR,4);
+         outtextxy(320,165,pesticide.name);
+     }
+     else
+     {
+         if(language == ENGLISH){
+             setcolor(DARKGRAY);
+             settextstyle(DEFAULT_FONT,HORIZ_DIR,3);
+             outtextxy(405,170,"NAME");
+         }
+         else if(language == CHINESE)
+         {
+             puthz(350,170,"药品名称",32,32,DARKGRAY);
+         }
+     }
+ 
+     if(strlen(pesticide.period) != 0)
+     {
+         settextstyle(DEFAULT_FONT,HORIZ_DIR,4);
+         outtextxy(320,285,pesticide.period);
+     }
+     else
+     {
+         if(language == ENGLISH){
+             setcolor(DARKGRAY);
+             settextstyle(DEFAULT_FONT,HORIZ_DIR,3);
+             outtextxy(382,290,"PERIOD");
+         }
+         else if(language == CHINESE)
+         {
+             puthz(350,290,"喷洒周期",32,32,DARKGRAY);
+         }
+     }
+ 
+     if(strlen(pesticide.pest_style) != 0)
+     {    
+         settextstyle(DEFAULT_FONT,HORIZ_DIR,4);
+         outtextxy(320,405,pesticide.pest_style);
+     }
+     else
+     {
+         if(language == ENGLISH){
+             setcolor(DARKGRAY);
+             settextstyle(DEFAULT_FONT,HORIZ_DIR,3);
+             outtextxy(332,410,"PEST STYLE");
+         }
+         else if(language == CHINESE)
+         {
+             puthz(350,410,"虫害种类",32,32,DARKGRAY);
+         }
+     }
+ 
+     mouseinit(); // 初始化鼠标
+ 
 
-    if(access(string,0)==-1)  //协助创建农药文件夹
-    {
-        if(mkdir(string)!=0)
-        {
-            // perror("ERROR IN BUILDING THE FIELD PACKAGE!");
-            delay(2000);
-            exit(1);
-        }
-    }
 
-    if(strlen(now_pesticide)>4)
-    {
-        strcpy(stringnow,string);
-        strcat(stringnow,"\\");
-        strcat(stringnow,now_pesticide);
-        if((fp=fopen(stringnow,"rb+"))!=NULL)
-        {
-            if((fread(&pesticide,sizeof(pesticide),1,fp))==1)
-            {
-                    // perror("ERROR IN READING");
-            }
-        }
-        else
-        {
-                // perror("ERROR IN CREATING!");
-        }
-        fclose(fp);
-    }
 
-    clrmous(MouseX,MouseY);
-    cleardevice();
-    pesticide_screen(language);
 
-    setcolor(DARKGRAY);
-    setfillstyle(SOLID_FILL,WHITE);
-    bar(320,270,580,330);
-    bar(320,390,580,450);
-    bar(320,150,580,210);
-
-    if(strlen(pesticide.name)!=0)
-    {
-        settextstyle(DEFAULT_FONT,HORIZ_DIR,4);
-        outtextxy(320,165,pesticide.name);
-    }
-    else
-    {
-        if(language == ENGLISH ){
-            setcolor(DARKGRAY);
-            settextstyle(DEFAULT_FONT,HORIZ_DIR,3);
-            outtextxy(405,170,"NAME");
-        }
-        else if(language == CHINESE)
-        {
-            puthz(350,170,"药品名称",32,32,DARKGRAY);
-        }
-    }
-            
-    if(strlen(pesticide.period)!=0)
-    {
-        settextstyle(DEFAULT_FONT,HORIZ_DIR,4);
-        outtextxy(320,285,pesticide.period);
-    }
-    else
-    {
-        if(language == ENGLISH ){
-            setcolor(DARKGRAY);
-            settextstyle(DEFAULT_FONT,HORIZ_DIR,3);
-            outtextxy(382,290,"PERIOD");
-        }
-        else if(language == CHINESE)
-        {
-            puthz(350,290,"喷洒周期",32,32,DARKGRAY);
-        }
-    }
-
-    if(strlen(pesticide.pest_style)!=0)
-    {    
-        settextstyle(DEFAULT_FONT,HORIZ_DIR,4);
-        outtextxy(320,405,pesticide.pest_style);
-    }
-    else
-    {
-        if(language == ENGLISH ){
-            setcolor(DARKGRAY);
-            settextstyle(DEFAULT_FONT,HORIZ_DIR,3);
-            outtextxy(332,410,"PEST STYLE");
-        }
-        else if(language == CHINESE)
-        {
-            puthz(350,410,"虫害种类",32,32,DARKGRAY);
-        }
-    }
-    mouseinit();
-
+    //第二部分
     while(1)
     {
         newmouse(&MouseX,&MouseY,&press);

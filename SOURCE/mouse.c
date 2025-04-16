@@ -10,10 +10,12 @@ MOUSE.c
 UPDATER: dengshuumin
 FUNCTION: mouse action
 ABSTRACT:
-		A.mread
-		B.newmouse
+		A. mread
+		B. newmouse
 VERSION: 3.0
 ***************************/
+
+
 int MouseX;
 int MouseY;
 int MouseS;
@@ -22,7 +24,11 @@ void *buffer;
 union REGS regs;
 int flag = 0;
 
-void mouseinit() //鍒濆鍖?
+/*
+ * 函数：mouseinit
+ * 功能：初始化鼠标，设置鼠标可活动区域，保存初始背景并绘制鼠标
+ */
+void mouseinit()
 {
 	int retcode;
 	int xmin, xmax, ymin, ymax, x_max = 625, y_max = 480;
@@ -32,45 +38,55 @@ void mouseinit() //鍒濆鍖?
 	xmax = x_max - 1;
 	ymin = 8;
 	ymax = y_max - 2;
+
+	// 鼠标初始化
 	regs.x.ax = 0;
-	int86(51, &regs, &regs);
+	int86(51, &regs, &regs); // 调用 BIOS 中断初始化鼠标
 	retcode = regs.x.ax;
+
 	if (retcode == 0)
 	{
-		;
-		//printf("Mouse or Mouse Driver Obsent,Please Install!");
-		//delay(5000);
+		; // 鼠标或驱动不存在，保留错误处理
+		// printf("Mouse or Mouse Driver Absent, Please Install!");
+		// delay(5000);
 	}
 	else
 	{
+		// 设置鼠标可移动的水平范围
 		regs.x.ax = 7;
 		regs.x.cx = xmin;
 		regs.x.dx = xmax;
 		int86(51, &regs, &regs);
+
+		// 设置鼠标可移动的垂直范围
 		regs.x.ax = 8;
 		regs.x.cx = ymin;
 		regs.x.dx = ymax;
 		int86(51, &regs, &regs);
 	}
+
+	// 设置初始鼠标状态和位置
 	MouseS = 0;
-	MouseX = 320, MouseY = 240;
+	MouseX = 320;
+	MouseY = 240;
+
+	// 保存鼠标位置背景并绘制鼠标
 	save_bk_mou(320, 240);
 	mouse(MouseX, MouseY);
 	flag = 1;
 }
 
+
 /*****************************
 FUNCTION: mouse
-DESCRIPTION: 鐢讳笉鍚屽舰鎬佺殑榧犳爣
-INPUT: x,y
-RETURN: 鏃?
+DESCRIPTION: 根据 MouseS 值绘制不同样式的鼠标指针
+INPUT: x, y —— 鼠标左上角坐标
 ******************************/
 void mouse(int x, int y)
 {
-
 	switch (MouseS)
 	{
-	case 1: //鎵嬪娍榧犳爣
+	case 1: // 箭头样式（常规鼠标）
 	{
 		setcolor(WHITE);
 		setlinestyle(0, 0, 1);
@@ -111,7 +127,8 @@ void mouse(int x, int y)
 		line(x + 1, y + 13, x - 1, y + 9);
 	}
 	break;
-	case 2: //鍏夋爣
+
+	case 2: // 光标（竖条线）
 	{
 		setcolor(DARKGRAY);
 		setlinestyle(0, 0, 1);
@@ -120,7 +137,8 @@ void mouse(int x, int y)
 		line(x + 5, y - 1, x + 5, y + 15);
 	}
 	break;
-	case 3: //鍗佸瓧
+
+	case 3: // 十字线（选区标识）
 	{
 		setcolor(WHITE);
 		setlinestyle(0, 0, 1);
@@ -128,7 +146,8 @@ void mouse(int x, int y)
 		line(x + 5, y - 1, x + 5, y + 15);
 	}
 	break;
-	case 4://閾呯瑪
+
+	case 4: // 镰刀样式
 	{
 		setcolor(LIGHTGRAY);
     	setlinestyle(0,0,1);
@@ -159,7 +178,8 @@ void mouse(int x, int y)
 		line(x+8,y+10,x+9,y+10);
 	}
 	break;
-	case 5: //姗＄毊
+
+	case 5: // 雪花样式
 	{
 		putpixel(x+3,y-2,LIGHTGRAY);
 		setlinestyle(0,0,1);
@@ -179,7 +199,7 @@ void mouse(int x, int y)
 	}
 	break;
 
-	case 6 : //鏍戣嫍
+	case 6: // 树苗图标
 	{
 		setcolor(GREEN);
 		setlinestyle(SOLID_LINE,0,NORM_WIDTH);
@@ -193,11 +213,10 @@ void mouse(int x, int y)
 		line(x+6,y-2,x+7,y-2);
 		line(x+5,y-1,x+7,y-1);
 		line(x+4,y,x+7,y);
-
 	}
 	break;
 
-	case 7 : //閾插瓙
+	case 7: // 铲子图标
 	{
 		setcolor(LIGHTGRAY);
 		setlinestyle(SOLID_LINE,0,NORM_WIDTH);
@@ -210,13 +229,11 @@ void mouse(int x, int y)
 
 		setcolor(BROWN);
 		line(x+3,y+2,x+4,y+2);
-
-		line(x+3,y+3,x+5,y+3);//x-1 y-2
+		line(x+3,y+3,x+5,y+3);
 		line(x+4,y+4,x+6,y+4);
 		line(x+5,y+5,x+7,y+5);
 		line(x+6,y+6,x+8,y+6);
 		line(x+7,y+7,x+9,y+7);
-
 		line(x+8,y+8,x+11,y+8);
 		line(x+9,y+9,x+10,y+9);
 		line(x+8,y+10,x+9,y+10);
@@ -224,7 +241,7 @@ void mouse(int x, int y)
 	}
 	break;
 
-	case 8 : //鏃楀瓙
+	case 8: // 温度计图标
 	{
 		setcolor(LIGHTGRAY);
 		setlinestyle(SOLID_LINE,0,NORM_WIDTH);
@@ -244,7 +261,7 @@ void mouse(int x, int y)
 	}
 	break;
 
-	case 9: //姘?
+	case 9: // 水滴图标
 	{
 		setcolor(BLUE);
 		setlinestyle(SOLID_LINE,0,NORM_WIDTH);
@@ -261,7 +278,7 @@ void mouse(int x, int y)
 	}
 	break;
 
-	default: //榛樿榧犳爣
+	default: // 默认箭头样式
 	{
 		setlinestyle(0, 0, 1);
 		setcolor(WHITE);
@@ -294,6 +311,7 @@ void mouse(int x, int y)
 	break;
 	}
 }
+
 
 /*void mou_pos(int *nx,int *ny,int*nbuttons)//鏇存敼榧犳爣浣嶇疆
 {
@@ -329,102 +347,97 @@ void mread(int *nx,int *ny,int*nbuttons)//鏀瑰潗鏍囦笉鐢?
 }
 */
 
-/***************************************
-FUNCTION: mread
-DESCRIPTION: 鑾峰彇鏂扮殑瀵勫瓨鍣ㄤ俊鎭?
-INPUT: nx,ny,nbuttons
-RETURN: 鏃?
-****************************************/
+// 获取当前鼠标位置和按键状态
 void mread(int *nx, int *ny, int *nbuttons)
 {
-	regs.x.ax = 3;
-	int86(51, &regs, &regs);
-	*nx = regs.x.cx;
-	*ny = regs.x.dx;
-	*nbuttons = regs.x.bx;
+    regs.x.ax = 3;
+    int86(51, &regs, &regs);
+    *nx = regs.x.cx;
+    *ny = regs.x.dx;
+    *nbuttons = regs.x.bx;
 }
 
-/*******************************************
-FUNCTION: newmouse
-DESCRIPTION: 榧犳爣鐘舵�佸彂鐢熷彉鍖栧垯鏇存柊榧犳爣
-INPUT: nx,ny,nbuttons
-RETURN: 鏃?
-********************************************/
 
+// 更新鼠标状态（位置、按钮），若变化则重绘鼠标
 void newmouse(int *nx, int *ny, int *nbuttons)
 {
-	int xn, yn, buttonsn;
-	int x0 = *nx, y0 = *ny, buttons0 = *nbuttons;
-	mread(&xn, &yn, &buttonsn);
-	*nx = xn;
-	*ny = yn;
-	*nbuttons = buttonsn;
-	if (buttons0 == *nbuttons)
-		*nbuttons = 0; //浣垮緱鑳借繛缁寜閿?
-	if (xn == x0 && yn == y0 && buttonsn == buttons0)
-		return;		 	//榧犳爣鐘舵�佷笉鍙樺垯鐩存帴杩斿洖S
-	clrmous(x0, y0); 	//璇存槑榧犳爣鐘舵�佸彂鐢熶簡鏀瑰彉
-	save_bk_mou(*nx, *ny);
-	drawmous(*nx, *ny);
+    int xn, yn, buttonsn;
+    int x0 = *nx, y0 = *ny, buttons0 = *nbuttons;
+
+    mread(&xn, &yn, &buttonsn);
+    *nx = xn; *ny = yn; *nbuttons = buttonsn;
+
+    if (buttons0 == *nbuttons) *nbuttons = 0;
+    if (xn == x0 && yn == y0 && buttonsn == buttons0) return;
+
+    clrmous(x0, y0);             // 清除旧鼠标
+    save_bk_mou(*nx, *ny);       // 保存新背景
+    drawmous(*nx, *ny);          // 绘制新鼠标
 }
 
-void save_bk_mou(int nx, int ny) //瀛橀紶鏍囪儗鏅?
+// 保存鼠标区域背景图像，便于后续还原
+void save_bk_mou(int nx, int ny)
 {
-	int size;
-
-	size = imagesize(nx - 1, ny - 2, nx + 11, ny + 17);
-	buffer = malloc(size);
-	if (buffer != NULL)
-		getimage(nx - 1, ny - 2, nx + 11, ny + 17, buffer);
-	// else
-		//printf("Error");
+    int size = imagesize(nx - 1, ny - 2, nx + 11, ny + 17);
+    buffer = malloc(size);
+    if (buffer != NULL)
+        getimage(nx - 1, ny - 2, nx + 11, ny + 17, buffer);
 }
 
-void clrmous(int nx, int ny) //娓呴櫎榧犳爣
+
+
+// 清除鼠标图像（如果当前鼠标已被绘制）
+void clrmous(int nx, int ny)
 {
-	if (flag == 1)
+	if (flag == 1) // 说明当前鼠标已绘制，需要清除
 	{
-		setwritemode(XOR_PUT);
-		mouse(nx, ny);
-		putimage(nx - 1, ny - 2, buffer, COPY_PUT);
-		free(buffer);
-		flag = 0;
-		setwritemode(COPY_PUT);
+		setwritemode(XOR_PUT);               // 设置异或绘图模式（防止覆盖背景）
+		mouse(nx, ny);                       // 绘制鼠标图像
+		putimage(nx - 1, ny - 2, buffer, COPY_PUT); // 恢复背景图像
+		free(buffer);                        // 释放保存的背景缓冲
+		flag = 0;                            // 更新标志位，表示鼠标已清除
+		setwritemode(COPY_PUT);              // 恢复正常绘图模式
 	}
 }
+
+
+// 绘制鼠标图像（如果当前尚未绘制）
 void drawmous(int nx, int ny)
 {
-	if (flag == 0)
+	if (flag == 0) // 当前没有鼠标图像，执行绘制
 	{
-		setwritemode(COPY_PUT);
-		mouse(nx, ny);
-		flag = 1;
+		setwritemode(COPY_PUT);             // 设置正常绘图模式
+		mouse(nx, ny);                      // 调用鼠标绘制函数
+		flag = 1;                           // 标记已绘制
 	}
 }
 
-//濡傛灉鍦ㄦ涓偣鍑伙紝鍒欒繑鍥?1锛涘湪妗嗕腑鏈偣鍑伙紝鍒欒繑鍥?2锛涗笉鍦ㄦ涓垯杩斿洖0
+
+// 判断鼠标是否在指定矩形区域 (x1, y1)-(x2, y2) 内，并返回对应状态
 int mouse_press(int x1, int y1, int x2, int y2)
 {
-	//鍦ㄦ涓偣鍑伙紝鍒欒繑鍥?1
-	if (MouseX > x1 && MouseX < x2 && MouseY > y1 && MouseY < y2 && press == 1)
-	{
-		return 1;
-	}
+    // 鼠标在区域内点击了左键（press == 1）
+    if (MouseX > x1 && MouseX < x2 && MouseY > y1 && MouseY < y2 && press == 1)
+    {
+        return 1;
+    }
 
-	//鍦ㄦ涓湭鐐瑰嚮锛屽垯杩斿洖2
-	else if (MouseX > x1 && MouseX < x2 && MouseY > y1 && MouseY < y2 && press == 0)
-	{
-		return 2;
-	}
+    // 鼠标在区域内但没有点击（悬停）
+    else if (MouseX > x1 && MouseX < x2 && MouseY > y1 && MouseY < y2 && press == 0)
+    {
+        return 2;
+    }
 
-	//鍦ㄦ涓偣鍑诲彸閿紝鍒欒繑鍥?3
-	else if (MouseX > x1 && MouseX < x2 && MouseY > y1 && MouseY < y2 && press == 2)
-	{
-		return 3;
-	}
+    // 鼠标在区域内点击了右键（press == 2）
+    else if (MouseX > x1 && MouseX < x2 && MouseY > y1 && MouseY < y2 && press == 2)
+    {
+        return 3;
+    }
 
-	else
-	{
-		return 0;
-	}
+    // 鼠标不在该区域内
+    else
+    {
+        return 0;
+    }
 }
+
