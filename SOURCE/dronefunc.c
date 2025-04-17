@@ -1,17 +1,25 @@
 #include "public.h"
 #include "dronf.h"
 
+/*
+函数功能：绘制无人机信息录入页面的界面元素，包括输入框、按钮和文字提示
+参数：
+    language —— 当前语言（ENGLISH 或 CHINESE），决定显示中英文
+*/
 void dronefunc_screen(int language)
 {
-    back_button(PAINT);
-    put_drone2(12,140,DARKGRAY,LIGHTGRAY,15);
-    printbox(350,30,570,90,DARKGRAY,1,5,5);
-    printbox(350,120,570,180,DARKGRAY,1,5,5);
-    printbox(350,210,570,270,DARKGRAY,1,5,5);
-    printbox(350,300,570,360,DARKGRAY,1,5,5);
-    printbox(350,390,570,450,DARKGRAY,1,5,5);
+    back_button(PAINT);  // 绘制返回按钮
+    put_drone2(12,140,DARKGRAY,LIGHTGRAY,15);  // 绘制无人机示意图
+
+    // 绘制五个输入框
+    printbox(350,30,570,90,DARKGRAY,1,5,5);    // 名称输入框
+    printbox(350,120,570,180,DARKGRAY,1,5,5);  // 质量输入框
+    printbox(350,210,570,270,DARKGRAY,1,5,5);  // 机翼输入框
+    printbox(350,300,570,360,DARKGRAY,1,5,5);  // 天气输入框
+    printbox(350,390,570,450,DARKGRAY,1,5,5);  // 时间输入框
 
     if(language == ENGLISH ){
+        // 英文标签
         setcolor(DARKGRAY);
         settextstyle(DEFAULT_FONT,HORIZ_DIR,3);
         outtextxy(180,50,"   NAME");
@@ -19,24 +27,33 @@ void dronefunc_screen(int language)
         outtextxy(180,230,"   WING");
         outtextxy(180,320,"WEATHER ");
         outtextxy(180,410,"   TIME");
-        outtextxy(87,390,"OK");
+        outtextxy(87,390,"OK");  // 确认按钮
     }
     else if(language == CHINESE)
     {
+        // 中文标签
         puthz(210,50,"名称",32,32,DARKGRAY);
         puthz(210,140,"质量",32,32,DARKGRAY);
         puthz(210,230,"机翼",32,32,DARKGRAY);
         puthz(210,320,"天气",32,32,DARKGRAY);
         puthz(210,410,"时间",32,32,DARKGRAY);
-        puthz(83,387,"确认",32,32,DARKGRAY);
+        puthz(83,387,"确认",32,32,DARKGRAY);  // 确认按钮
     }
 
-    
-    printbox(35,360,185,440,DARKGRAY,1,5,5); 
-    
-
+    printbox(35,360,185,440,DARKGRAY,1,5,5);  // 确认按钮边框
 }
 
+
+
+/*
+函数功能：显示并加载当前选择的无人机信息，并绘制无人机信息编辑界面。
+参数：
+    username —— 当前用户名，用于拼接路径
+    nowdrone —— 当前选中的无人机信息结构体指针
+    language —— 当前语言（ENGLISH 或 CHINESE）
+返回值：
+    int —— 暂未定义返回，后续交互应在后面补全
+*/
 int drone_list_page(char *username,DRONEINFO *nowdrone,int language)
 {
     int i;
@@ -44,47 +61,56 @@ int drone_list_page(char *username,DRONEINFO *nowdrone,int language)
     int num[3];
     int test[3];
     char dronename[20];
-    char *weather_msgs[3]={"ALL","RAIN","SNOW"};
+    char *weather_msgs[3]={"ALL","RAIN","SNOW"};  // 天气类型预设
     FILE *fp;
     int power;
     double factor;
     char string[80] = "c:\\DATA\\";
+
+    // 构造无人机数据文件路径
     strcat(string,username);
     strcat(string,"\\DRONE\\");
     strcat(string,nowdrone->name);
     strcat(string,".dat");
     
-
+    // 显示无人机名称
     setcolor(DARKGRAY);
     settextstyle(DEFAULT_FONT,HORIZ_DIR,4);
     outtextxy(360,45,nowdrone->name);
-    strcpy(dronename,nowdrone->name);
+
+    strcpy(dronename,nowdrone->name); // 备份当前无人机名
+
+    // 初始化各项字段
     memset(test,0,sizeof(test));
     memset(nowdrone->weight,0,sizeof(nowdrone->weight));
     memset(nowdrone->time,0,sizeof(nowdrone->time));
     memset(nowdrone->weather,0,sizeof(nowdrone->weather));
     memset(nowdrone->wing,0,sizeof(nowdrone->wing));
-    if((fp=fopen(string,"rb"))!=NULL)
-        {
-            if((fread(nowdrone,sizeof(DRONEINFO),1,fp))!=1)
-            {
-                // perror("ERROR IN READING");
-            }
-        }
-        else
-        {
-            // perror("ERROR IN CREATING!");
-        }
-            fclose(fp);
 
-    
+    // 从文件中读取无人机信息
+    if((fp=fopen(string,"rb"))!=NULL)
+    {
+        if((fread(nowdrone,sizeof(DRONEINFO),1,fp))!=1)
+        {
+            // 读取失败
+        }
+    }
+    else
+    {
+        // 文件不存在或创建失败
+    }
+    fclose(fp);
+
+    // 绘制无人机信息界面
     dronefunc_screen(language);
+
+    // 显示无人机信息字段内容
     setcolor(DARKGRAY);
     settextstyle(DEFAULT_FONT,HORIZ_DIR,4);
-    outtextxy(360,135,nowdrone->weight);
-    outtextxy(360,225,nowdrone->wing);
-    outtextxy(360,315,nowdrone->weather);
-    outtextxy(360,405,nowdrone->time);
+    outtextxy(360,135,nowdrone->weight);   // 质量
+    outtextxy(360,225,nowdrone->wing);     // 机翼
+    outtextxy(360,315,nowdrone->weather);  // 天气
+    outtextxy(360,405,nowdrone->time);     // 时间
 
     mouseinit();
     while(1)
@@ -106,7 +132,7 @@ int drone_list_page(char *username,DRONEINFO *nowdrone,int language)
             test[0] = 1; 
             for(i=0;i<strlen(nowdrone->weight);i++)
             {
-                     //鍚姩
+                     //鍚?鍔?
                 if(nowdrone->weight[i]>='0'&&nowdrone->weight[i]<='9') continue;
                 else 
                 {

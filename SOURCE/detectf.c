@@ -628,7 +628,7 @@ Point find_closest_house(int record[21][26])
 
  void setinfo(char *username, struct droneinfo dronerecord[5], struct pesticideinfo pestrecord[3], int setting[2])
  {
-  //第一部分
+  //基本定义
      int i;
      int flag = 0, avaliable = 1;
      char string[80] = "c:\\DATA";     // 基础路径
@@ -684,7 +684,10 @@ Point find_closest_house(int record[21][26])
         }
     }
 
-//第三部分house1
+
+
+
+//主循环
     while(1)
     {
         newmouse(&MouseX, &MouseY, &press);
@@ -750,6 +753,7 @@ Point find_closest_house(int record[21][26])
             }
         }
 
+
         //第四部分house2
         // 鼠标悬停高亮：HOUSE2 区域
         else if(mouse_press(280, 155, 545, 200) == 2)
@@ -811,6 +815,7 @@ Point find_closest_house(int record[21][26])
             }
         }
 
+
         //第五部分house3
         else if(mouse_press(270+10,205,535+10,250)==2)
         {
@@ -860,6 +865,7 @@ Point find_closest_house(int record[21][26])
             }
         }
 
+
         //第六部分house4
         else if(mouse_press(270+10,255,535+10,300)==2)
         {
@@ -908,6 +914,8 @@ Point find_closest_house(int record[21][26])
                 memset(dronerecord[3].name,0,sizeof(dronerecord[3].name));
             }
         }
+
+
         //第七部分pest1
         else if(mouse_press(270+10,305,535+10,350)==2)
         {
@@ -963,6 +971,7 @@ Point find_closest_house(int record[21][26])
                 memset(pestrecord[0].name,0,sizeof(pestrecord[0].name));
             }
         }
+
 
         //第八部分pest2
         else if(mouse_press(270+10,355,535+10,400)==2)
@@ -1020,6 +1029,7 @@ Point find_closest_house(int record[21][26])
             }
         }
 
+
         //第十部分 return按钮
         else if(mouse_press(5, 330, 95, 369) == 1) // 点击“返回”按钮
         {
@@ -1045,6 +1055,7 @@ Point find_closest_house(int record[21][26])
             delay(100);
             return;
         }
+
 
         //第十一部分鼠标移出检查
         else
