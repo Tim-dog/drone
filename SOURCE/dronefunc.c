@@ -112,6 +112,8 @@ int drone_list_page(char *username,DRONEINFO *nowdrone,int language)
     outtextxy(360,315,nowdrone->weather);  // 天气
     outtextxy(360,405,nowdrone->time);     // 时间
 
+
+    
     mouseinit();
     while(1)
     {

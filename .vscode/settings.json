@@ -57,12 +57,17 @@
   "C_Cpp_Runner.useLinkTimeOptimization": false,
   "C_Cpp_Runner.msvcSecureNoWarnings": false,
   "files.associations": {
+    "*.vue": "vue",
+    "*.wpy": "vue",
+    "*.wxml": "html",
+    "*.wxss": "css",
     "main.C": "cpp",
     "public.h": "c",
     "home.h": "c",
     "fieldfunc.h": "c",
     "dir.h": "c",
     "plant.h": "c",
-    "welcome.h": "c"
+    "welcome.h": "c",
+    "main.h": "c"
   }
 }
